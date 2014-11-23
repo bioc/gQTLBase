@@ -1,0 +1,29 @@
+import(GenomicRanges)
+import(methods)
+import(BiocGenerics)
+
+importFrom(BiocParallel, bpparam, bpworkers, bplapply)
+
+importFrom(BatchJobs, loadResults, findDone, getJobIds,
+   reduceResults, reduceResultsList, loadResult, makeRegistry,
+   batchMapResults, submitJobs)
+
+importFrom(BBmisc, chunk)
+
+exportClass("ciseStore")
+export(ciseStore)
+
+export(storeToFf, 
+  extractByProbes, extractByRanges, storeMapResults,
+  storeApply, loadAndFilterResult)
+
+#storeToQuantiles, storeToHist, storeToFDR,
+#storeToFDRByProbe, 
+
+importFrom(ff, ff, ffdf, matprint, delete)
+
+importFrom(ffbase, ffappend, save.ffdf)
+
+export(matprint)
+
+importFrom(S4Vectors, as.matrix)
