@@ -1,0 +1,185 @@
+---
+title: "gQTLBase: infrastructure for storage and interrogation of eQTL, mQTL,
+  	  dsQTL etc. archives"
+author: "Vincent J. Carey, stvjc at channing.harvard.edu"
+date: "November 2014"
+output:
+  BiocStyle::pdf_document:
+    toc: yes
+    number_sections: yes
+  BiocStyle::html_document:
+    highlight: pygments
+    number_sections: yes
+    theme: united
+    toc: yes
+---
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{gQTLBase: infrastructure for storage
+and interrogation of large eQTL, mQTL, etc., archives}
+-->
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown()
+```
+
+
+# Introduction
+
+It is well-recognized that cis-eQTL searches with
+dense genotyping yields billions of test results.  While
+many are consistent with no association, it is hard to draw
+an objective threshold, and targeted analysis may reveal
+signals of interest that do not deserve penalization for
+genome-wide search.
+
+We recently performed a comprehensive cis-eQTL search
+with the GEUVADIS FPKM expression measures (22k Ensembl
+genes) and 20 million 1000 genomes genotypes with
+radius 1 million bases around each gene body.  There are
+185 million SNP-gene pairs in this analysis.  This
+package aims to simplify interactive interrogation of
+this resource.
+
+## Brief view of how the tests were done
+
+The following function takes as argument 'chunk' a list with elements
+chr (character token for indexing chromosomes in
+genotype data in VCF) and genes (vector of gene identifiers).
+It implicitly uses a TabixFile reference to acquire genotypes
+on the samples managed in the geuvPack package.
+
+```{r eval=FALSE}
+gettests = function( chunk, useS3=FALSE ) {
+  library(VariantAnnotation)
+  snpsp = gtpath( chunk$chr, useS3=useS3)
+  tf = TabixFile( snpsp )
+  library(geuvPack)
+  if (!exists("geuFPKM")) data(geuFPKM)
+  clipped = clipPCs(regressOut(geuFPKM, ~popcode), 1:10)
+  set.seed(54321)
+  ans = cisAssoc( clipped[ chunk$genes, ], tf, cisradius=1000000, lbmaf=0.01 )
+  metadata(ans)$prepString = "clipPCs(regressOut(geuFPKM, ~popcode), 1:10)"
+  ans
+  }
+```
+
+cisAssoc returns a GRanges instance with fields relevant to computing
+FDR for cis association.
+
+A BatchJobs registry is created as follows:
+
+```{r bjreg,eval=FALSE}
+flatReg = makeRegistry("flatReg",  file.dir="flatStore",
+        seed=123, packages=c("GenomicRanges",
+            "GGtools", "VariantAnnotation", "Rsamtools",
+            "geuvPack", "GenomeInfoDb"))
+```
+
+For any list 'flatlist' of pairs (chr, genes), the following
+code asks the scheduler to run gettests on every element, when
+it can.  Using the Channing cumulus cloud, the job ran on 40
+hosts at a cost of 170 USD.
+```{r dosub,eval=FALSE}
+batchMap(flatReg, gettests, flatlist)
+submitJobs(flatReg)
+```
+
+This creates a 'sharded' archive of 7GB of results managed by
+a Registry object.
+
+
+## Illustration on a subset
+
+We have extracted 3 shards from the job for illustration with the
+gQTLBase package.
+```{r getstuff,results="hide", echo=FALSE}
+suppressPackageStartupMessages({
+library(BiocGenerics)
+library(Homo.sapiens)
+library(stats4)
+library(IRanges)
+library(GGtools)
+library(gQTLBase)
+options(BBmisc.ProgressBar.style="off")
+})
+```
+```{r doone}
+library(gQTLBase)
+library(geuvStore)
+mm = partialRegistry()
+mm
+```
+
+mm here denotes a BatchJobs Registry.  We want to wrap
+it lightly, adding maps from probes and addresses
+of SNPs to job identifiers where these probes and SNPs
+have been analyzed.
+```{r wrap, cache=TRUE}
+mm = ciseStore(mm, addProbeMap = TRUE, addRangeMap = TRUE)
+mm
+```
+
+There are various approaches available to get results
+out of the store.  At present we don't want a full
+API for result-level operations, so work from BatchJobs
+directly:
+```{r getr}
+loadResult(mm@reg, 1)[1:3]
+```
+
+
+On a multicore machine or cluster, we can visit job results in parallel.
+The storeApply function uses BatchJobs reduceResultsList to transform
+job results by a user-supplied function.  The reduction events
+occur in parallel through BiocParallel bplapply over a set
+of job id chunks whose character can be controlled through
+the n.chunks parameter.
+
+We'll illustrate by taking the length of each result.
+```{r setuplen}
+library(BiocParallel)
+library(parallel)
+mp = MulticoreParam(workers=max(c(1, detectCores()-4)))
+register(mp)
+```
+```{r getlen, cache=TRUE}
+lens = storeApply(mm, length)
+summary(unlist(lens))
+```
+
+## Interrogating by probe
+
+For a known GEUVADIS Ensembl identifier (or vector
+thereof) we can acquire all cis association test results as follows.
+
+```{r doex,cache=TRUE}
+pvec = mm@probemap[1:4,1]  # don't want API for map, just getting examples
+litex = extractByProbes( mm, pvec )
+length(litex)
+litex[1:3]
+```
+
+We also have extractByRanges.
+
+# Towards estimation of distributions relevant to FDR computation 
+
+## Small-footprint collection of association statistics
+
+In the gQTLstats package,
+we will use the plug-in FDR algorithm of Hastie, Tibshirani and
+Friedman *Elements of Statistical Learning* ch. 18.7, algorithm
+18.3.  We will not handle hundreds of millions of scores directly
+in a holistic way, except for the estimation of quantiles of the observed
+association scores.  This particular step is carried out 
+using `r CRANpkg("ff")` and
+`r CRANpkg("ffbase")` packages.  We illustrate with our subset of GEUVADIS scores.
+
+
+```{r getfff}
+allassoc = storeToFf(mm, "chisq")
+length(allassoc)
+object.size(allassoc)
+allassoc[1:4]
+```
+
