@@ -34,10 +34,22 @@ signals of interest that do not deserve penalization for
 genome-wide search.
 
 We recently performed a comprehensive cis-eQTL search
-with the GEUVADIS FPKM expression measures (22k Ensembl
-genes) and 20 million 1000 genomes genotypes with
-radius 1 million bases around each gene body.  There are
-185 million SNP-gene pairs in this analysis.  This
+with the GEUVADIS FPKM expression measures.  The
+most prevalent transcript types in this 
+dataset are
+
+```{r lktt,echo=FALSE}
+litt = structure(c(15280L, 4853L, 1450L, 1153L, 476L, 114L), .Dim = 6L, .Dimnames = structure(list(
+    c("protein_coding", "pseudogene", "antisense", "lincRNA", 
+    "processed_transcript", "IG_V_gene")), .Names = "")
+)
+litt
+```
+*cis*-associated variation in abundance of
+these entities
+was assessed using 20 million 1000 genomes genotypes with
+radius 1 million bases around each transcribed region.  There are
+185 million SNP-transcript pairs in this analysis.  This
 package aims to simplify interactive interrogation of
 this resource.
 
@@ -101,6 +113,7 @@ library(stats4)
 library(IRanges)
 library(GGtools)
 library(gQTLBase)
+library(geuvStore)
 options(BBmisc.ProgressBar.style="off")
 })
 ```
