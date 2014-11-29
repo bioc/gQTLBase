@@ -10,7 +10,7 @@ apply a function
 over job results in a ciseStore instance
 }
 \usage{
-storeApply(store, f, n.chunks, ..., verbose = FALSE)
+storeApply(store, f, n.chunks, ids=NULL, ..., verbose = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,6 +30,8 @@ results and apply \code{f} to them.
 If missing, the value of \code{bpworkers(bpparam())} will be
 used.
 }
+  \item{ids}{defaults to NULL; if non-null, the jobs to
+be processed are limited to those identified in this vector.}
   \item{\dots}{
 additional arguments to bplapply
 }
@@ -78,6 +80,7 @@ if (require(geuvStore)) {
  reg = partialRegistry()
  store = ciseStore(reg, addProbeMap=FALSE, addRangeMap=FALSE)
  storeApply(store, length)
+ storeApply(store, length, ids=c(1:3,603))
  }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

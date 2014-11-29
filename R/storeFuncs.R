@@ -103,7 +103,7 @@ extractByRanges = function(store, gr) {
 }
 
 
-storeApply = function( store, f, n.chunks, ... , verbose=FALSE ) {
+storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
  oldPB = getOption("BBmisc.ProgressBar.style")
  oldBJV = getOption("BatchJobs.verbose")
  on.exit( {
@@ -114,8 +114,9 @@ storeApply = function( store, f, n.chunks, ... , verbose=FALSE ) {
    options(BBmisc.ProgressBar.style="off")
    options(BatchJobs.verbose=FALSE)
    }
- ids = getJobIds( store )
- chs = getStoreIDchunks( store, n.chunks ) #chunk( ids, n.chunks = n.chunks )
+ curids = getJobIds( store )
+ if (!is.null(ids)) ids = intersect(ids,curids)
+ chs = getStoreIDchunks( store, n.chunks, ids=ids ) #chunk( ids, n.chunks = n.chunks )
 # probably need to intersect chs with ids or ids is ignored
  fOnRetrieval = function(ch) reduceResultsList( getRegistry(store), ch,
       fun=function(job, res) f(res) )
@@ -138,9 +139,11 @@ makeRangeMap = function(store, ...) {
  ul
 }
 
-getStoreIDchunks = function( store, n.chunks ) {
+getStoreIDchunks = function( store, n.chunks, ids=NULL ) {
  if (missing(n.chunks)) n.chunks = bpworkers(bpparam())
- chunk( getJobIds( store ), n.chunks = n.chunks )
+ curids = getJobIds(store)
+ if (!is.null(ids)) curids = intersect(ids, curids)
+ chunk( curids, n.chunks = n.chunks )
 }
 
 getResult = function(store, ind) {
