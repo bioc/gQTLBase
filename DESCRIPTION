@@ -3,7 +3,8 @@ Title: gQTLBase: infrastructure for eQTL, mQTL and similar studies
 Version: 0.0.8
 Author: VJ Carey <stvjc@channing.harvard.edu>
 Description: infrastructure for eQTL, mQTL and similar studies
-Suggests: geuvStore, knitr, rmarkdown, BiocStyle
+Suggests: geuvStore, knitr, rmarkdown, BiocStyle,
+	GGtools, Homo.sapiens, IRanges
 Imports: GenomicRanges, methods, BatchJobs, BiocParallel, BBmisc,
 	S4Vectors, ff, ffbase, BiocGenerics
 Depends: 
