@@ -76,6 +76,13 @@ onl = structure(c(64360L, 74828L, 81351L, 85256L, 80605L, 70500L, 69074L,
  uu = ll[order(names(ll))]
  checkTrue(all.equal(uu, onl))
 
+# storeApply with ids
+ ll = unlist(storeApply(nn, length, ids=c(1:3,603,903)))
+ uu = ll[order(names(ll))]
+ limonl = structure(c(64360L, 73207L, 78858L, 81240L, 80387L), .Names = c("1", 
+"2", "3", "603", "903"))
+ checkTrue(all.equal(uu, limonl))
+
 # storeMapResults
  fd = tempfile()
  tempreg=makeRegistry("tempSMR",file.dir=fd)
