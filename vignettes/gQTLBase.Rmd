@@ -50,7 +50,7 @@ these entities
 was assessed using 20 million 1000 genomes genotypes with
 radius 1 million bases around each transcribed region.  There are
 185 million SNP-transcript pairs in this analysis.  This
-package aims to simplify interactive interrogation of
+package (`r Biocpkg("gQTLBase")`) aims to simplify interactive interrogation of
 this resource.
 
 ## Brief view of how the tests were done
@@ -58,8 +58,8 @@ this resource.
 The following function takes as argument 'chunk' a list with elements
 chr (character token for indexing chromosomes in
 genotype data in VCF) and genes (vector of gene identifiers).
-It implicitly uses a TabixFile reference to acquire genotypes
-on the samples managed in the geuvPack package.
+It implicitly uses a `TabixFile` reference to acquire genotypes
+on the samples managed in the `r Biocexptpkg("geuvPack")` package.
 
 ```{r eval=FALSE}
 gettests = function( chunk, useS3=FALSE ) {
@@ -76,10 +76,10 @@ gettests = function( chunk, useS3=FALSE ) {
   }
 ```
 
-cisAssoc returns a GRanges instance with fields relevant to computing
+`cisAssoc` returns a `GRanges` instance with fields relevant to computing
 FDR for cis association.
 
-A BatchJobs registry is created as follows:
+A `r CRANpkg("BatchJobs")` registry is created as follows:
 
 ```{r bjreg,eval=FALSE}
 flatReg = makeRegistry("flatReg",  file.dir="flatStore",
@@ -104,7 +104,7 @@ a Registry object.
 ## Illustration on a subset
 
 We have extracted 3 shards from the job for illustration with the
-gQTLBase package.
+`r Biocpkg("gQTLBase")` package.
 ```{r getstuff,results="hide", echo=FALSE}
 suppressPackageStartupMessages({
 library(BiocGenerics)
@@ -124,7 +124,7 @@ mm = partialRegistry()
 mm
 ```
 
-mm here denotes a BatchJobs Registry.  We want to wrap
+`mm` here denotes a BatchJobs `Registry`.  We want to wrap
 it lightly, adding maps from probes and addresses
 of SNPs to job identifiers where these probes and SNPs
 have been analyzed.
@@ -143,11 +143,11 @@ loadResult(mm@reg, 1)[1:3]
 
 
 On a multicore machine or cluster, we can visit job results in parallel.
-The storeApply function uses BatchJobs reduceResultsList to transform
+The `storeApply` function uses `r CRANpkg("BatchJobs")` `reduceResultsList` to transform
 job results by a user-supplied function.  The reduction events
-occur in parallel through BiocParallel bplapply over a set
+occur in parallel through `r Biocpkg("BiocParallel")` `bplapply` over a set
 of job id chunks whose character can be controlled through
-the n.chunks parameter.
+the `n.chunks` parameter.
 
 We'll illustrate by taking the length of each result.
 ```{r setuplen}
@@ -160,6 +160,9 @@ register(mp)
 lens = storeApply(mm, length)
 summary(unlist(lens))
 ```
+
+It is possible to limit the scope of application by setting the
+`ids` parameter in `storeApply`.
 
 ## Interrogating by probe
 
@@ -196,3 +199,9 @@ object.size(allassoc)
 allassoc[1:4]
 ```
 
+## Other statistical functions
+
+Refer to the `r Biocpkg("gQTLstats")` package for additional
+functions that generate quantile estimates, histograms, and
+FDR estimates based on `ciseStore` contents and various
+filtrations thereof.
