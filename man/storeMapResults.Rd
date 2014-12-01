@@ -19,7 +19,7 @@ loadAndFilterResult(reg,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{store}{
-an instance of \code{\link[eqtlStore]{ciseStore-class}}
+an instance of \code{\link[gQTLBase]{ciseStore-class}}
 }
   \item{reg}{instance of BatchJobs Registry class}
   \item{reg2}{
