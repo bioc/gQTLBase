@@ -40,9 +40,9 @@ killTempRegistry = function(reg) {
  unlink(reg$file.dir, recursive=TRUE)
 }
 
-storeToFf = function( store, field, ids=NULL, filter=force, ..., checkField=FALSE ) {
+storeToFf = function( store, field, ids=NULL, 
+   filter=force, ..., checkField=FALSE, ischar = FALSE ) {
 #
-# getter must return a numeric vector
 #
 cleanc = function (...) 
 {
@@ -65,10 +65,16 @@ cleanc = function (...)
   if (checkField) {
        result1 = loadAndFilterResult(reg=store@reg, id=ids[1],filter=filter)
        stopifnot(field %in% names(mcols(result1)))
+       if (is.character(mcols(result1)[,field]) & !ischar) {
+           message("note: checkField identifies entity as character but ischar == FALSE; setting to TRUE")
+           ischar = TRUE
+           }
        }
   tmp = bplapply(ids, function(x) {
       patt = paste0("ff_", x)
-      ff(as.numeric(mcols(loadAndFilterResult(reg=store@reg, id=x, filter=filter))[[field]]), pattern=patt)
+      g = as.numeric
+      if (ischar) g = function(x) factor(as.character(x))
+      ff(g(mcols(loadAndFilterResult(reg=store@reg, id=x, filter=filter))[[field]]), pattern=patt)
       })
   suppressMessages({do.call(cleanc, tmp)})
 }
@@ -124,6 +130,8 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
 }
 
 makeProbeMap = function(store, ...) {
+ chk1 = loadResult( store@reg, 1)
+ stopifnot("probeid" %in% names(mcols(x)))
  plist = storeApply( store, function(x) unique(as.character(mcols(x)$probeid)), ... )
  ul = unlist(plist, recursive=FALSE)
  lens = sapply(ul, length)
@@ -133,7 +141,9 @@ makeProbeMap = function(store, ...) {
 }
 
 makeRangeMap = function(store, ...) {
- plist = storeApply( store, range )
+ chk1 = loadResult( store@reg, 1)
+ stopifnot(is(chk1, "GRanges"))
+ plist = storeApply( store, range )  # storeApply will create a list of lists
  ul = unlist(GRangesList(unlist(plist)))
  ul$jobid = names(ul)
  ul
@@ -157,3 +167,44 @@ getResultList = function(store, inds) {
  loadResults( store@reg, inds )
 }
 
+DFstoreToFf = function( store, field, ids=NULL, 
+   ..., checkField=FALSE, ischar = FALSE ) {
+#
+# for BySNP assessment, we saved data.frame instances only
+#
+stopifnot( inherits(store, "Registry") )
+filter=force
+cleanc = function (...) 
+{
+#
+# avoids problems with > 1500 ff open
+# NOTE: simple modification to ffbase::c.ff 0.11.3, GPL-3
+#
+    l <- list(...)
+    f <- NULL
+    for (x in l) {
+        f <- ffappend(f, x)
+        delete(x)
+        rm(x)
+    }
+    f
+}
+
+  stopifnot(length(field)==1 && is.character(field))
+  if (is.null(ids)) ids = store@validJobs
+  if (checkField) {
+       result1 = loadResult(reg=store, id=ids[1],filter=filter)
+       stopifnot(field %in% names(result1))
+       if (is.character(result1[,field]) & !ischar) {
+           message("note: checkField identifies entity as character but ischar == FALSE; setting to TRUE")
+           ischar = TRUE
+           }
+       }
+  tmp = bplapply(ids, function(x) {
+      patt = paste0("ff_", x)
+      g = as.numeric
+      if (ischar) g = function(x) factor(as.character(x))
+      ff(g(loadResult(reg=store, id=x, filter=filter)[[field]]), pattern=patt)
+      })
+  suppressMessages({do.call(cleanc, tmp)})
+}

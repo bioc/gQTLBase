@@ -27,11 +27,15 @@ ciseStore = function(reg, addProbeMap=TRUE, addRangeMap=TRUE) {
 }
 
 setGeneric("getProbeMap", function(x) standardGeneric("getProbeMap"))
-setMethod("getProbeMap", "ciseStore", function(x)
-  x@probemap)
+setMethod("getProbeMap", "ciseStore", function(x) {
+  if (nrow(x@probemap) == 0) stop("empty probe map, please add one")
+  x@probemap
+  })
 setGeneric("getRangeMap", function(x) standardGeneric("getRangeMap"))
-setMethod("getRangeMap", "ciseStore", function(x)
-  x@rangeMap)
+setMethod("getRangeMap", "ciseStore", function(x) {
+  if (length(x@rangeMap) == 0) stop("empty range map, please add one")
+  x@rangeMap
+  })
 
 setGeneric("getRegistry", function(x) standardGeneric("getRegistry"))
 setMethod("getRegistry", "ciseStore", function(x) x@reg)
