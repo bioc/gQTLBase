@@ -79,13 +79,13 @@ cleanc = function (...)
   suppressMessages({do.call(cleanc, tmp)})
 }
 
-extractByProbes = function(store, probeids) {
+extractByProbes = function(store, probeids, extractTag="probeid") {
   pmap = getProbeMap(store)
   uids = unique(pmap[ match(probeids, pmap[,1]), 2 ])
   ans = bplapply( uids, function(x) {
        tmp = getResult(store, x)  # thinner than getResults on all ids
        if (length(tmp)>0) tmp$jobid = x
-       tmp[ which(tmp$probeid %in% probeids) ]
+       tmp[ which(mcols(tmp)[[extractTag]] %in% probeids) ]
        })
   unlist(GRangesList(ans))  # seems a nuisance
 }
@@ -129,10 +129,10 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
  bplapply( chs, fOnRetrieval, ... )
 }
 
-makeProbeMap = function(store, ...) {
+makeProbeMap = function(store, ..., probetag="probeid") {
  chk1 = loadResult( store@reg, 1)
- stopifnot("probeid" %in% names(mcols(x)))
- plist = storeApply( store, function(x) unique(as.character(mcols(x)$probeid)), ... )
+ stopifnot(probetag %in% names(mcols(chk1)))
+ plist = storeApply( store, function(x) unique(as.character(mcols(x)[[probetag]])), ... )
  ul = unlist(plist, recursive=FALSE)
  lens = sapply(ul, length)
  jobn = as.numeric(names(ul))

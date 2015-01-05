@@ -11,11 +11,11 @@ setMethod("initialize", "ciseStore", function(.Object, reg, ...) {
   .Object
 })
 
-ciseStore = function(reg, addProbeMap=TRUE, addRangeMap=TRUE) {
+ciseStore = function(reg, addProbeMap=TRUE, addRangeMap=TRUE, probetag="probeid") {
  tmp = new("ciseStore", reg)
  if (addProbeMap) {
   message("building probe:job map...")
-  tmp@probemap = makeProbeMap(tmp)
+  tmp@probemap = makeProbeMap(tmp, probetag=probetag)
   message("done.")
   }
  if (addRangeMap) {
