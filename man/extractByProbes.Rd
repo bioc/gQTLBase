@@ -9,7 +9,7 @@ retrieve eqtlTest results from a ciseStore instance
 retrieve eqtlTest results from a ciseStore instance
 }
 \usage{
-extractByProbes(store, probeids)
+extractByProbes(store, probeids, extractTag = "probeid")
 extractByRanges(store, gr)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -22,6 +22,11 @@ vector character tokens
 }
   \item{gr}{
 instance of \code{\link[GenomicRanges]{GRanges-class}}
+}
+  \item{extractTag}{
+character atom telling what field in the
+archived GRanges is regarded as the probe or
+gene identifier
 }
 }
 \details{
