@@ -2,16 +2,16 @@
 title: "gQTLBase: infrastructure for storage and interrogation of eQTL, mQTL,
   	  dsQTL etc. archives"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
-date: "November 2014"
+date: "January 2015"
 output:
-  BiocStyle::pdf_document:
-    toc: true
-    number_sections: true
   BiocStyle::html_document:
     highlight: pygments
     number_sections: true
     theme: united
     toc: true
+  BiocStyle::pdf_document:
+    toc: true
+    number_sections: true
 ---
 <!--
 %\VignetteEngine{knitr::rmarkdown}
