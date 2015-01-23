@@ -43,8 +43,10 @@ setMethod("getRegistry", "ciseStore", function(x) x@reg)
 setMethod("show", "ciseStore", function(object) {
  cat("ciseStore instance with", length(object@validJobs),
  "completed jobs.\n")
-# cat("first job result:\n")
-# show(loadResults(getRegistry(object), (object@validJobs)[1]))
+ cat("excerpt from job ", object@validJobs[1],":\n")
+ suppressMessages({
+ show(loadResult(getRegistry(object), (object@validJobs)[1])[1])
+ })
 # cat("Table of classes of job results:\n")
 # table(unlist(bplapply(object@validJobs, function(x) class(loadResults(object@reg, x)[[1]]))))
 })
