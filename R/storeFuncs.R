@@ -54,8 +54,11 @@ cleanc = function (...)
     f <- NULL
     for (x in l) {
         f <- ffappend(f, x)
+        oldw = options()$warn
+        options(warn=-1)
         delete(x)
         rm(x)
+        options(warn=oldw)
     }
     f
 }
@@ -173,7 +176,6 @@ DFstoreToFf = function( store, field, ids=NULL,
 # for BySNP assessment, we saved data.frame instances only
 #
 stopifnot( inherits(store, "Registry") )
-filter=force
 cleanc = function (...) 
 {
 #
@@ -193,7 +195,7 @@ cleanc = function (...)
   stopifnot(length(field)==1 && is.character(field))
   if (is.null(ids)) ids = store@validJobs
   if (checkField) {
-       result1 = loadResult(reg=store, id=ids[1],filter=filter)
+       result1 = loadResult(reg=store, id=ids[1]) #,filter=filter)
        stopifnot(field %in% names(result1))
        if (is.character(result1[,field]) & !ischar) {
            message("note: checkField identifies entity as character but ischar == FALSE; setting to TRUE")
@@ -204,7 +206,8 @@ cleanc = function (...)
       patt = paste0("ff_", x)
       g = as.numeric
       if (ischar) g = function(x) factor(as.character(x))
-      ff(g(loadResult(reg=store, id=x, filter=filter)[[field]]), pattern=patt)
+      #ff(g(loadResult(reg=store, id=x, filter=filter)[[field]]), pattern=patt)
+      ff(g(loadResult(reg=store, id=x)[[field]]), pattern=patt)
       })
   suppressMessages({do.call(cleanc, tmp)})
 }
