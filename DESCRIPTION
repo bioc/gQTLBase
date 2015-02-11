@@ -1,6 +1,6 @@
 Package: gQTLBase
 Title: gQTLBase: infrastructure for eQTL, mQTL and similar studies
-Version: 0.0.19
+Version: 0.1.1
 Author: VJ Carey <stvjc@channing.harvard.edu>
 Description: Infrastructure for eQTL, mQTL and similar studies.
 Suggests: geuvStore, knitr, rmarkdown, BiocStyle, RUnit,
@@ -12,4 +12,4 @@ Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0
 LazyLoad: yes
 VignetteBuilder: knitr
-BiocViews: SNP, GenomeAnnotation, Genetics
+BiocViews: SNP, GenomeAnnotation, Genetics, DataImport, FunctionalGenomics
