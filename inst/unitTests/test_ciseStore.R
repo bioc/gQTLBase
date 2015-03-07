@@ -68,8 +68,8 @@ onl = structure(c(64360L, 74828L, 80605L, 78765L, 76926L, 80024L, 81924L,
 # extractByRanges
  rr = range(ebp)
  ebr = extractByRanges( nn, rr )
- checkTrue( length(ebr) == 190912 )
- checkTrue(length(unique(ebr$jobid)) == 8)
+ checkTrue( length(ebr) == 278166 )
+ checkTrue(length(unique(ebr$jobid)) == 11)
 
 # SnpMatrix4GRanges
 #  seems irrelevant for this package?
