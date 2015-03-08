@@ -82,18 +82,19 @@ onl = structure(c(64360L, 74828L, 80605L, 78765L, 76926L, 80024L, 81924L,
 
 # storeApply
  ll = unlist(storeApply(nn, length))
- uu = ll[order(names(ll))]
+ uu = ll[names(onl)]
  checkTrue(all.equal(uu, onl))
 
 # storeApply with ids
  ll = unlist(storeApply(nn, length, ids=c(1:3,603,903)))
- uu = ll[order(names(ll))]
  limonl = structure(c(64360L, 73207L, 78858L, 81240L, 80387L), .Names = c("1", 
 "2", "3", "603", "903"))
+ uu = ll[names(limonl)]
  checkTrue(all.equal(uu, limonl))
 
 # storeMapResults
  fd = tempfile()
+ library(BatchJobs)
  tempreg=makeRegistry("tempSMR",file.dir=fd)
  storeMapResults(nn, tempreg, fun=function(job,res,...)length(res))
  submitJobs(tempreg, 1:2)
@@ -107,10 +108,10 @@ onl = structure(c(64360L, 74828L, 80605L, 78765L, 76926L, 80024L, 81924L,
  checkTrue(length(st) == 216425)
 
 # internal
- set.seed(1234)
- x = list(runif(20), runif(20))
- fff = gQTLBase:::ff_from_list(x)
- checkTrue(length(fff)==40)
+# set.seed(1234)
+# x = list(runif(20), runif(20))
+# fff = gQTLBase:::ff_from_list(x)
+# checkTrue(length(fff)==40)
 
 }
 checkCisEstore()
