@@ -77,11 +77,6 @@ if (require(geuvStore)) {
  require(BatchJobs)
  reg = partialRegistry()
  store = ciseStore(reg, addProbeMap=FALSE, addRangeMap=FALSE)
- if (.Platform$OS.type == "windows") {
-  library(BiocParallel)
-  p = SerialParam()
-  register(p)
-  }
  smchisq = storeToFf( store, "chisq", ids=store@validJobs[1:3]) 
  smchisq
  }

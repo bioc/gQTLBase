@@ -1,8 +1,10 @@
 import(GenomicRanges)
 import(methods)
 import(BiocGenerics)
+import(doParallel)
+import(foreach)
 
-importFrom(BiocParallel, bpparam, bpworkers, bplapply)
+#importFrom(BiocParallel, bpparam, bpworkers, bplapply)
 
 importFrom(BatchJobs, loadResults, findDone, getJobIds,
    reduceResults, reduceResultsList, loadResult, makeRegistry,

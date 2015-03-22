@@ -41,8 +41,12 @@ show
 %}
 \note{
 the construction of the maps occurs via \code{\link{storeApply}}, which
-will use \code{\link[BiocParallel]{bplapply}} and thus the currently
-registered bpparam plays a role in determining the speed of construction.
+%will use \code{\link[BiocParallel]{bplapply}} and thus the currently
+%registered bpparam plays a role in determining the speed of construction.
+will use \code{\link[foreach]{foreach}}, so that registration
+of a parallel back end
+using, e.g., \code{\link[doParallel]{registerDoParallel}},
+will determine the speed of construction
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

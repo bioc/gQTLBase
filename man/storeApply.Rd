@@ -23,17 +23,20 @@ function on GRanges stored in ciseStore
   \item{n.chunks}{
 Number of chunks into which the jobs are
 to be broken; the
-series of chunks is handed to \code{\link[BiocParallel]{bplapply}}
-and \code{\link[BatchJobs]{reduceResults}} is used to extract
+%series of chunks is handed to \code{\link[BiocParallel]{bplapply}}
+%and \code{\link[BatchJobs]{reduceResults}} is used to extract
+series of chunks is handed to \core{\link[foreach]{foreach}}
+to extract
 results and apply \code{f} to them.
 
-If missing, the value of \code{bpworkers(bpparam())} will be
+%If missing, the value of \code{bpworkers(bpparam())} will be
+If missing, the value of \code{getDoParWorkers()}
 used.
 }
   \item{ids}{defaults to NULL; if non-null, the jobs to
 be processed are limited to those identified in this vector.}
   \item{\dots}{
-additional arguments to bplapply
+additional arguments to foreach
 }
   \item{verbose}{
 if TRUE will allow progressbars and other messages to display 

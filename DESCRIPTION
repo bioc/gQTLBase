@@ -1,12 +1,12 @@
 Package: gQTLBase
 Title: gQTLBase: infrastructure for eQTL, mQTL and similar studies
-Version: 0.1.6
+Version: 0.1.7
 Author: VJ Carey <stvjc@channing.harvard.edu>
 Description: Infrastructure for eQTL, mQTL and similar studies.
 Suggests: geuvStore, knitr, rmarkdown, BiocStyle, RUnit,
 	GGtools, Homo.sapiens, IRanges
-Imports: GenomicRanges, methods, BatchJobs, BiocParallel, BBmisc,
-	S4Vectors, ff, ffbase, BiocGenerics
+Imports: GenomicRanges, methods, BatchJobs, BBmisc,
+	S4Vectors, ff, ffbase, BiocGenerics, foreach, doParallel
 Depends: 
 Maintainer: VJ Carey <stvjc@channing.harvard.edu>
 License: Artistic-2.0

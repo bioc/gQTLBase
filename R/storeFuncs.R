@@ -73,23 +73,27 @@ cleanc = function (...)
            ischar = TRUE
            }
        }
-  tmp = bplapply(ids, function(x) {
-      patt = paste0("ff_", x)
-      g = as.numeric
-      if (ischar) g = function(x) factor(as.character(x))
-      ff(g(mcols(loadAndFilterResult(reg=store@reg, id=x, filter=filter))[[field]]), pattern=patt)
-      })
+##BP  tmp = bplapply(ids, function(x) { #}
+      tmp = foreach(x=ids) %dopar% {
+        patt = paste0("ff_", x)
+        g = as.numeric
+        if (ischar) g = function(x) factor(as.character(x))
+        ff(g(mcols(loadAndFilterResult(reg=store@reg, id=x, filter=filter))[[field]]), pattern=patt)
+##BP      })
+        }
   suppressMessages({do.call(cleanc, tmp)})
 }
 
 extractByProbes = function(store, probeids, extractTag="probeid") {
   pmap = getProbeMap(store)
   uids = unique(pmap[ match(probeids, pmap[,1]), 2 ])
-  ans = bplapply( uids, function(x) {
+##BP  ans = bplapply( uids, function(x) {
+  ans = foreach (x=uids) %dopar% {
        tmp = getResult(store, x)  # thinner than getResults on all ids
        if (length(tmp)>0) tmp$jobid = x
        tmp[ which(mcols(tmp)[[extractTag]] %in% probeids) ]
-       })
+##BP       })
+       }
   unlist(GRangesList(ans))  # seems a nuisance
 }
   
@@ -99,13 +103,15 @@ extractByRanges = function(store, gr) {
   fi = findOverlaps( rmap, gr )
   sh = queryHits(fi)
   ids = as.integer(unique(rmap[sh]$jobid))
-  ans = bplapply(ids, function(x) {
+##BP  ans = bplapply(ids, function(x) {
+  ans = foreach(x=ids) %dopar% {
       tmp = subsetByOverlaps(getResult(store, x),
        gr)
       if (length(tmp) == 0) return(tmp)
       tmp$jobid = x
       tmp
-      })
+##BP      })
+  }
   ans = ans[ which(sapply(ans,length)>0) ]
   stopifnot(length(ans)>0)
   GenomicRanges::unlist(GRangesList(ans))
@@ -129,7 +135,8 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
 # probably need to intersect chs with ids or ids is ignored
  fOnRetrieval = function(ch) reduceResultsList( getRegistry(store), ch,
       fun=function(job, res) f(res) )
- bplapply( chs, fOnRetrieval, ... )
+##BP bplapply( chs, fOnRetrieval, ... )
+ foreach(x=chs) %dopar% fOnRetrieval(x, ...)
 }
 
 makeProbeMap = function(store, ..., probetag="probeid") {
@@ -153,7 +160,8 @@ makeRangeMap = function(store, ...) {
 }
 
 getStoreIDchunks = function( store, n.chunks, ids=NULL ) {
- if (missing(n.chunks)) n.chunks = bpworkers(bpparam())
+##BP if (missing(n.chunks)) n.chunks = bpworkers(bpparam())
+ if (missing(n.chunks)) n.chunks = getDoParWorkers()
  curids = getJobIds(store)
  if (!is.null(ids)) curids = intersect(ids, curids)
  chunk( curids, n.chunks = n.chunks )
@@ -202,12 +210,14 @@ cleanc = function (...)
            ischar = TRUE
            }
        }
-  tmp = bplapply(ids, function(x) {
+##BP  tmp = bplapply(ids, function(x) {
+     tmp = foreach(x=ids) %dopar% {
       patt = paste0("ff_", x)
       g = as.numeric
       if (ischar) g = function(x) factor(as.character(x))
       #ff(g(loadResult(reg=store, id=x, filter=filter)[[field]]), pattern=patt)
       ff(g(loadResult(reg=store, id=x)[[field]]), pattern=patt)
-      })
+#BP      })
+    }
   suppressMessages({do.call(cleanc, tmp)})
 }
