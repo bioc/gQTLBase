@@ -25,7 +25,7 @@ Number of chunks into which the jobs are
 to be broken; the
 %series of chunks is handed to \code{\link[BiocParallel]{bplapply}}
 %and \code{\link[BatchJobs]{reduceResults}} is used to extract
-series of chunks is handed to \core{\link[foreach]{foreach}}
+series of chunks is handed to \code{\link[foreach]{foreach}}
 to extract
 results and apply \code{f} to them.
 
