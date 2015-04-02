@@ -15,8 +15,8 @@ output:
 ---
 <!--
 %\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{gQTLBase: infrastructure for storage
-and interrogation of large eQTL, mQTL, etc., archives}
+%\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
+%\VignettePackage{gQTLBase}
 -->
 
 ```{r style, echo = FALSE, results = 'asis'}
