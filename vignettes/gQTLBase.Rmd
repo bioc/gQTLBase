@@ -1,3 +1,8 @@
+<!--
+%\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignettePackage{gQTLBase}
+-->
 ---
 title: "gQTLBase: infrastructure for storage and interrogation of eQTL, mQTL,
   	  dsQTL etc. archives"
@@ -13,11 +18,6 @@ output:
     toc: true
     number_sections: true
 ---
-<!--
-%\VignetteEngine{knitr::rmarkdown}
-%\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
-%\VignettePackage{gQTLBase}
--->
 
 ```{r style, echo = FALSE, results = 'asis'}
 BiocStyle::markdown()
