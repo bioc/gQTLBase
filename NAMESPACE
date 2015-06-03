@@ -3,6 +3,8 @@ import(methods)
 import(BiocGenerics)
 import(doParallel)
 import(foreach)
+import(ffbase)
+import(ff)
 
 #importFrom(BiocParallel, bpparam, bpworkers, bplapply)
 
@@ -22,9 +24,9 @@ export(storeToFf,
 #storeToQuantiles, storeToHist, storeToFDR,
 #storeToFDRByProbe, 
 
-importFrom(ff, ff, ffdf, matprint, delete)
+#importFrom(ff, ff, ffdf, matprint, delete, clone, is.factor.ff)
 
-importFrom(ffbase, ffappend, save.ffdf)
+#importFrom(ffbase, ffappend, save.ffdf)
 
 export(matprint)
 

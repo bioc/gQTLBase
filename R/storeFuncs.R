@@ -53,7 +53,7 @@ cleanc = function (...)
     l <- list(...)
     f <- NULL
     for (x in l) {
-        f <- ffappend(f, x)
+        f <- ffapp2(f, x)
         oldw = options()$warn
         options(warn=-1)
         delete(x)
@@ -193,7 +193,7 @@ cleanc = function (...)
     l <- list(...)
     f <- NULL
     for (x in l) {
-        f <- ffappend(f, x)
+        f <- ffapp2(f, x)
         delete(x)
         rm(x)
     }
