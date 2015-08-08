@@ -1,10 +1,15 @@
 import(GenomicRanges)
+import(S4Vectors)
 import(methods)
 import(BiocGenerics)
 import(doParallel)
 import(foreach)
-import(ffbase)
-import(ff)
+#import(ff)
+importFrom(ff, ff, matprint, clone.ff, delete, vmode, clone,
+	maxffmode, is.ff, is.factor.ff)
+#importFrom(ffbase, coerce_to_highest_vmode)
+#import(bit)
+#import(ffbase)
 
 #importFrom(BiocParallel, bpparam, bpworkers, bplapply)
 
@@ -30,4 +35,3 @@ export(storeToFf,
 
 export(matprint)
 
-importFrom(S4Vectors, as.matrix)
