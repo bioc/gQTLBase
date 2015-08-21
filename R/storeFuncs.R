@@ -53,7 +53,7 @@ cleanc = function (...)
     l <- list(...)
     f <- NULL
     for (x in l) {
-        f <- ffapp2(f, x)
+        f <- ffappend(f, x)
         oldw = options()$warn
         options(warn=-1)
         delete(x)
@@ -102,7 +102,7 @@ extractByProbes = function(store, probeids, extractTag="probeid") {
   unlist(GRangesList(ans))  # seems a nuisance
 }
 
-extractBySymbols = function(store, symbols, sym2probe, ...) {
+extractBySymbols = function(store, symbols, sym2probe, extractTag = "probeid", ...) {
 #
 # sym2probe is named vector c(sym1=p1, sym2=p2, and so on)
 #
@@ -111,7 +111,7 @@ extractBySymbols = function(store, symbols, sym2probe, ...) {
  names(rmap) = as.character(sym2probe)
  ans = extractByProbes(store, sym2probe[symbols], ...)
  if ("sym" %in% names(mcols(ans))) message("clobbering 'sym' element of mcols of result")
- ans$sym =  rmap[ ans$probeid ]
+ ans$sym =  rmap[ ans[[extractTag]] ]
  ans
 }
  
@@ -210,7 +210,7 @@ cleanc = function (...)
     l <- list(...)
     f <- NULL
     for (x in l) {
-        f <- ffapp2(f, x)
+        f <- ffappend(f, x)
         delete(x)
         rm(x)
     }
