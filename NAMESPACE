@@ -23,7 +23,7 @@ exportClass("ciseStore")
 export(ciseStore)
 
 export(storeToFf, 
-  extractByProbes, extractByRanges, storeMapResults,
+  extractByProbes, extractByRanges, storeMapResults, extractBySymbols,
   storeApply, loadAndFilterResult)
 
 #storeToQuantiles, storeToHist, storeToFDR,

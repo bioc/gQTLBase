@@ -96,7 +96,19 @@ extractByProbes = function(store, probeids, extractTag="probeid") {
        }
   unlist(GRangesList(ans))  # seems a nuisance
 }
-  
+
+extractBySymbols = function(store, symbols, sym2probe, ...) {
+#
+# sym2probe is named vector c(sym1=p1, sym2=p2, and so on)
+#
+ stopifnot(is(sym2probe, "character"), is(names(sym2probe), "character"))
+ rmap = names(sym2probe)
+ names(rmap) = as.character(sym2probe)
+ ans = extractByProbes(store, sym2probe[symbols], ...)
+ if ("sym" %in% names(mcols(ans))) message("clobbering 'sym' element of mcols of result")
+ ans$sym =  rmap[ ans$probeid ]
+ ans
+}
  
 extractByRanges = function(store, gr) {
   rmap = getRangeMap(store)
