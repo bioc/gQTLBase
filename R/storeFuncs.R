@@ -87,6 +87,10 @@ cleanc = function (...)
 extractByProbes = function(store, probeids, extractTag="probeid") {
   pmap = getProbeMap(store)
   uids = unique(pmap[ match(probeids, pmap[,1]), 2 ])
+  if (any(is.na(uids))) {
+     message("omitting some NA probeids that were not mapped to jobs")
+     uids = as.character(na.omit(uids))
+     }
 ##BP  ans = bplapply( uids, function(x) {
   ans = foreach (x=uids) %dopar% {
        tmp = getResult(store, x)  # thinner than getResults on all ids
