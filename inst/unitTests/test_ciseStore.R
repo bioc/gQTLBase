@@ -11,6 +11,9 @@ checkCisEstore = function() {
 #
 
  require(GenomeInfoDb)
+ library(doParallel)
+ library(parallel)
+ registerDoParallel(cores=(detectCores()-1))
 
 vj = c(1L, 1001L, 101L, 1101L, 1201L, 1301L, 1401L, 1501L, 1601L,
    1701L, 1801L, 1901L, 2001L, 201L, 2101L, 2201L, 301L, 401L, 501L,
@@ -92,13 +95,13 @@ onl = structure(c(64360L, 74828L, 80605L, 78765L, 76926L, 80024L, 81924L,
  uu = ll[names(limonl)]
 # checkTrue(all.equal(uu, limonl))
 
-# storeMapResults
- fd = tempfile()
- library(BatchJobs)
- tempreg=makeRegistry("tempSMR",file.dir=fd)
- storeMapResults(nn, tempreg, fun=function(job,res,...)length(res))
- submitJobs(tempreg, 1:2)
- waitForJobs(tempreg, timeout=30L)
+# storeMapResults  -- inducing timeouts, august 2015
+# fd = tempfile()
+# library(BatchJobs)
+# tempreg=makeRegistry("tempSMR",file.dir=fd)
+# storeMapResults(nn, tempreg, fun=function(job,res,...)length(res))
+# submitJobs(tempreg, 1:2)
+# waitForJobs(tempreg, timeout=30L)
 # checkTrue(length(findNotDone(tempreg))==90)
 # checkTrue(all.equal(as.numeric(unlist(loadResults(tempreg))), c(74828, 80605)))
 # checkTrue(all.equal(as.numeric(unlist(loadResults(tempreg))), c(64360, 74828)))

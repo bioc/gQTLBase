@@ -73,6 +73,7 @@ and may be removed in future versions.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+\dontrun{
 if (require(geuvStore)) {
  require(BatchJobs)
  reg = partialRegistry()
@@ -85,6 +86,7 @@ if (require(geuvStore)) {
  loadResults(tempreg)
  unlink(fd)
  }
+}
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
