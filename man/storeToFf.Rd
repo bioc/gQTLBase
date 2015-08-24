@@ -75,8 +75,7 @@ is no guarantee of order among elements
 \examples{
 if (require(geuvStore)) {
  require(BatchJobs)
- reg = partialRegistry()
- store = ciseStore(reg, validJobs=partialIds(), addProbeMap=FALSE, addRangeMap=FALSE)
+ store = makeGeuvStore()
  smchisq = storeToFf( store, "chisq", ids=store@validJobs[1:3]) 
  smchisq
  }

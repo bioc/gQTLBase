@@ -35,3 +35,4 @@ export(storeToFf,
 
 export(matprint)
 
+exportMethods("extractByProbes")

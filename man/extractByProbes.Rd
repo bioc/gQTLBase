@@ -1,5 +1,7 @@
 \name{extractByProbes}
 \alias{extractByProbes}
+\alias{extractByProbes,ciseStore,character,character-method}
+\alias{extractByProbes,ciseStore,character,missing-method}
 \alias{extractByRanges}
 \alias{extractBySymbols}
 %- Also NEED an '\alias' for EACH other topic documented here.
@@ -64,9 +66,7 @@ VJ Carey <stvjc@channing.harvard.edu>
 %}
 \examples{
 if (require(geuvStore)) {
- reg = partialRegistry()
- store = ciseStore(reg, validJobs=partialIds(), 
-     addProbeMap=TRUE, addRangeMap=TRUE) 
+ store = makeGeuvStore()
  ebp = extractByProbes(store, c("ENSG00000183814.10", "ENSG00000174827.9"))
  ebp
  rr = range(ebp)

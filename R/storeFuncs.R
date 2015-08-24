@@ -84,7 +84,18 @@ cleanc = function (...)
   suppressMessages({do.call(cleanc, tmp)})
 }
 
-extractByProbes = function(store, probeids, extractTag="probeid") {
+setGeneric("extractByProbes", function(store, probeids, extractTag="probeid") 
+             standardGeneric("extractByProbes"))
+setMethod("extractByProbes", c("ciseStore", "character", "character"),
+     function(store, probeids, extractTag="probeid") {
+     .extractByProbes(store=store, probeids=probeids, extractTag=extractTag)
+})
+setMethod("extractByProbes", c("ciseStore", "character", "missing"),
+     function(store, probeids, extractTag="probeid") {
+     .extractByProbes(store=store, probeids=probeids, extractTag="probeid")
+})
+
+.extractByProbes = function(store, probeids, extractTag="probeid") {
   pmap = getProbeMap(store)
   if (any(is.na(probeids))) {
      message("omitting some NA probeids...")

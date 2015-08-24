@@ -62,8 +62,7 @@ showClass("ciseStore")
 # get the global assignment back
 require(BatchJobs)
 if (require(geuvStore)) {
- reg = partialRegistry()
- store = ciseStore(reg, validJobs=partialIds(), addProbeMap=TRUE, addRangeMap=FALSE)
+ store = makeGeuvStore()
  store
  }
 }

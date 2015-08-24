@@ -80,8 +80,7 @@ over the entire store
 \examples{
 if (require(geuvStore)) {
  require(BatchJobs)
- reg = partialRegistry()
- store = ciseStore(reg, validJobs=partialIds(), addProbeMap=FALSE, addRangeMap=FALSE)
+ store = makeGeuvStore()
  storeApply(store, length)
  storeApply(store, length, ids=c(1:3,603))
  }

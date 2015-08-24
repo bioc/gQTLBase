@@ -76,8 +76,7 @@ and may be removed in future versions.
 \dontrun{
 if (require(geuvStore)) {
  require(BatchJobs)
- reg = partialRegistry()
- store = ciseStore(reg, validJobs=partialIds(), addProbeMap=FALSE, addRangeMap=FALSE)
+ store = makeGeuvStore()
  fd = tempfile()
  tempreg = makeRegistry("tempSMR", file.dir=fd)
  storeMapResults( store, tempreg, fun=function(job, res, ...) length(res) )
