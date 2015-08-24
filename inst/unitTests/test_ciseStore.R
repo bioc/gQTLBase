@@ -52,7 +52,7 @@ onl = structure(c(64360L, 74828L, 80605L, 78765L, 76926L, 80024L, 81924L,
 
  reg = geuvStore::partialRegistry()
  checkTrue(inherits(reg, "Registry"))
- nn = ciseStore(reg, TRUE, TRUE)
+ nn = ciseStore(reg=reg, validJobs=geuvStore::partialIds(), TRUE, TRUE)
 # checkTrue( all.equal(dim(nn@probemap), c(920,2)) )
 # checkTrue( length(nn@rangeMap) == 92 )
  checkTrue( seqlevelsStyle(nn@rangeMap) == "NCBI" )

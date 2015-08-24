@@ -9,12 +9,14 @@
 wrap a BatchJobs registry that manages results of a cis-eQTL search
 }
 \section{Objects from the Class}{
-Objects can be created by calls of the form \code{new("ciseStore", reg, ...)}.
+Objects can be created by calls of the form \code{new("ciseStore", reg=reg, ...)}.  All arguments must be named.
 
 We can also use
-\code{ciseStore(reg, addProbeMap = TRUE, addRangeMap = TRUE)}
+\code{ciseStore(reg, validJobs, addProbeMap = TRUE, addRangeMap = TRUE)}
 and the probemap and rangeMap slots will be populated
-appropriately
+appropriately.  If validJobs is missing, the validJobs slot will be
+populated by findDone(reg).  This may be problematic for handcrafted
+extracts from archives.
 }
 \section{Slots}{
   \describe{
@@ -61,7 +63,7 @@ showClass("ciseStore")
 require(BatchJobs)
 if (require(geuvStore)) {
  reg = partialRegistry()
- store = ciseStore(reg, addProbeMap=TRUE, addRangeMap=FALSE)
+ store = ciseStore(reg, validJobs=partialIds(), addProbeMap=TRUE, addRangeMap=FALSE)
  store
  }
 }

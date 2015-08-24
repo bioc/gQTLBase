@@ -129,7 +129,8 @@ it lightly, adding maps from probes and addresses
 of SNPs to job identifiers where these probes and SNPs
 have been analyzed.
 ```{r wrap, cache=TRUE}
-mm = ciseStore(mm, addProbeMap = TRUE, addRangeMap = TRUE)
+mm = ciseStore(mm, validJobs=partialIds(),
+        addProbeMap = TRUE, addRangeMap = TRUE)
 mm
 ```
 

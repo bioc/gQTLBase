@@ -76,7 +76,7 @@ and may be removed in future versions.
 if (require(geuvStore)) {
  require(BatchJobs)
  reg = partialRegistry()
- store = ciseStore(reg, addProbeMap=FALSE, addRangeMap=FALSE)
+ store = ciseStore(reg, validJobs=partialIds(), addProbeMap=FALSE, addRangeMap=FALSE)
  fd = tempfile()
  tempreg = makeRegistry("tempSMR", file.dir=fd)
  storeMapResults( store, tempreg, fun=function(job, res, ...) length(res) )

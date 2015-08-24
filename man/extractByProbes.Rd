@@ -65,7 +65,8 @@ VJ Carey <stvjc@channing.harvard.edu>
 \examples{
 if (require(geuvStore)) {
  reg = partialRegistry()
- store = ciseStore(reg, addProbeMap=TRUE, addRangeMap=TRUE) 
+ store = ciseStore(reg, validJobs=partialIds(), 
+     addProbeMap=TRUE, addRangeMap=TRUE) 
  ebp = extractByProbes(store, c("ENSG00000183814.10", "ENSG00000174827.9"))
  ebp
  rr = range(ebp)
