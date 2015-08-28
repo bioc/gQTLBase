@@ -2,6 +2,9 @@
 \alias{extractByProbes}
 \alias{extractByProbes,ciseStore,character,character-method}
 \alias{extractByProbes,ciseStore,character,missing-method}
+\alias{extractByRanges,ciseStore,GRanges-method}
+\alias{extractBySymbols,ciseStore,character,character,character-method}
+\alias{extractBySymbols,ciseStore,character,character,missing-method}
 \alias{extractByRanges}
 \alias{extractBySymbols}
 %- Also NEED an '\alias' for EACH other topic documented here.

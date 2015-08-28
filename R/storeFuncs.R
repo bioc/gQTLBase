@@ -95,6 +95,26 @@ setMethod("extractByProbes", c("ciseStore", "character", "missing"),
      .extractByProbes(store=store, probeids=probeids, extractTag="probeid")
 })
 
+setGeneric("extractByRanges", function(store, gr) 
+             standardGeneric("extractByRanges"))
+setMethod("extractByRanges", c("ciseStore", "GRanges"),
+     function(store, gr) {
+     .extractByRanges(store=store, gr=gr)
+})
+
+setGeneric("extractBySymbols", function(store, symbols, sym2probe, extractTag = "probeid")
+             standardGeneric("extractBySymbols"))
+setMethod("extractBySymbols", c("ciseStore", "character", "character", "character"),
+     function(store, symbols, sym2probe, extractTag) {
+     .extractBySymbols(store=store, symbols=symbols, sym2probe=sym2probe,
+          extractTag=extractTag)
+})
+setMethod("extractBySymbols", c("ciseStore", "character", "character", "missing"),
+     function(store, symbols, sym2probe, extractTag) {
+     .extractBySymbols(store=store, symbols=symbols, sym2probe=sym2probe,
+          extractTag="probeid")
+})
+
 .extractByProbes = function(store, probeids, extractTag="probeid") {
   pmap = getProbeMap(store)
   if (any(is.na(probeids))) {
@@ -113,20 +133,20 @@ setMethod("extractByProbes", c("ciseStore", "character", "missing"),
   unlist(GRangesList(ans))  # seems a nuisance
 }
 
-extractBySymbols = function(store, symbols, sym2probe, extractTag = "probeid", ...) {
+.extractBySymbols = function(store, symbols, sym2probe, extractTag = "probeid", ...) {
 #
 # sym2probe is named vector c(sym1=p1, sym2=p2, and so on)
 #
  stopifnot(is(sym2probe, "character"), is(names(sym2probe), "character"))
  rmap = names(sym2probe)
  names(rmap) = as.character(sym2probe)
- ans = extractByProbes(store, sym2probe[symbols], ...)
+ ans = extractByProbes(store, sym2probe[symbols], extractTag=extractTag, ...)
  if ("sym" %in% names(mcols(ans))) message("clobbering 'sym' element of mcols of result")
- ans$sym =  rmap[ ans[[extractTag]] ]
+ ans$sym =  rmap[ mcols(ans)[[extractTag]] ]
  ans
 }
  
-extractByRanges = function(store, gr) {
+.extractByRanges = function(store, gr) {
   rmap = getRangeMap(store)
   fi = findOverlaps( rmap, gr )
   sh = queryHits(fi)
