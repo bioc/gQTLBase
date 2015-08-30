@@ -20,7 +20,7 @@ mergeCIstates = function(gr, ermaset, epig, genome="hg19", useErma=TRUE) {
 
 mergeGWhits = function(gr, gwcat, use=c("both", "addr", "name")[1],
      grSnpField="SNP") {
- stopifnot(genome(gr) == genome(gwcat))
+ stopifnot(genome(gr)[1] == genome(gwcat)[1])
  # idea is to put a string with gwas hit phenotype in gwcat on coincident loci in gr
  if ("isGwasHit" %in% names(mcols(gr))) warning("will overwrite mcols field 'isGwasHit'")
  gr$isGwasHit = 0
