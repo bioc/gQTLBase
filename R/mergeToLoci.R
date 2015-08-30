@@ -5,10 +5,10 @@ mergeCIstates = function(gr, ermaset = NULL, epig, genome="hg19", importFull=FAL
 # for a selected epigenome
 #
       if (!useErma) stop("only set up for erma; planning AnnotationHub for 2016")
-      cd = colData(ermaset)
-      ind = match(epig, cd$Epigenome.Mnemonic)
-      fn = files(ermaset)[ind]
       if (is.null(stateGR)) {
+        cd = colData(ermaset)
+        ind = match(epig, cd$Epigenome.Mnemonic)
+        fn = files(ermaset)[ind]
         if (importFull) st = import(fn, genome=genome)
         else st = import(fn, which=gr, genome=genome)
         }
