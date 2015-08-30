@@ -13,7 +13,9 @@ mergeCIstates = function(gr, ermaset, epig, genome="hg19", useErma=TRUE) {
       gr$fullStates[queryHits(ov)] = st$name[subjectHits(ov)]
       abbCIstates = get(load(system.file("data/abbCIstates.rda", package="erma")))
       abbCIcols = get(load(system.file("data/abbCIcols.rda", package="erma")))
-      gr$states = abbCIstates[gr$fullStates]
+stlev = c("Het", "DNAse", "Enh", "Prom", "Quies", "ReprPC", "Tss", "Tx", 
+"ZNF/Rp")
+      gr$states = factor(abbCIstates[gr$fullStates], levels=stlev)
       gr$statecols = abbCIcols[gr$states]
       gr
   }

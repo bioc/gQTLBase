@@ -57,7 +57,9 @@ a GRanges instance with additional fields in mcols: fullStates, states,
 and statecols, denoting respectively the full annotation of ChromImpute
 for the inferred state, an abbreviated tag that collapses related states,
 and a color tag for rendering, that does not replicate the colors in
-the ChromImpute bed files.
+the ChromImpute bed files.  The states field is a factor with levels
+\code{c("Het", "DNAse", "Enh", "Prom", "Quies", "ReprPC", "Tss", "Tx", 
+"ZNF/Rp")}.
 
 for  mergeGWhits, a single mcols field is added, \code{isGwasHit}, that
 is 1 for coincident hit and 0 otherwise.  Eventually phenotype information
