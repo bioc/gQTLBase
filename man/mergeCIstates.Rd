@@ -11,7 +11,7 @@ merge ChromImpute chromatin states, or GWAS hit
 indicators, to a GRanges
 }
 \usage{
-mergeCIstates(gr, ermaset, epig, genome = "hg19", importFull=FALSE, useErma = TRUE)
+mergeCIstates(gr, ermaset=NULL, epig, genome = "hg19", importFull=FALSE, useErma = TRUE, stateGR=NULL)
 mergeGWhits(gr, gwcat, use=c("both", "addr", "name")[1],
      grSnpField="SNP")
 }
@@ -21,7 +21,8 @@ mergeGWhits(gr, gwcat, use=c("both", "addr", "name")[1],
 a GRanges instance
 }
   \item{ermaset}{
-an instance of \code{\link[erma]{ErmaSet-class}}
+an instance of \code{\link[erma]{ErmaSet-class}}.  if NULL, supply
+a GRanges as stateGR, with fields states and statecols
 }
   \item{gwcat}{
 an instance of \code{\link[gwascat]{gwaswloc-class}}, or any
@@ -50,6 +51,11 @@ is checked, if \code{"name"}, only SNP name.
 }
   \item{grSnpField}{
 character string naming the field in mcols(gr) with SNP id
+}
+  \item{stateGR}{
+a GRanges instance as imported from erma package or from AnnotationHub,
+with mcols field states denoting chromatin state and statecols the
+associated colors for rendering
 }
 }
 %\details{

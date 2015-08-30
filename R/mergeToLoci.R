@@ -1,5 +1,5 @@
 
-mergeCIstates = function(gr, ermaset, epig, genome="hg19", importFull=FALSE, useErma=TRUE) {
+mergeCIstates = function(gr, ermaset = NULL, epig, genome="hg19", importFull=FALSE, useErma=TRUE, stateGR=NULL) {
 #
 # label each range in a GenomicRanges with the chromatin state
 # for a selected epigenome
@@ -8,8 +8,11 @@ mergeCIstates = function(gr, ermaset, epig, genome="hg19", importFull=FALSE, use
       cd = colData(ermaset)
       ind = match(epig, cd$Epigenome.Mnemonic)
       fn = files(ermaset)[ind]
-      if (importFull) st = import(fn, genome=genome)
-      else st = import(fn, which=gr, genome=genome)
+      if (is.null(stateGR)) {
+        if (importFull) st = import(fn, genome=genome)
+        else st = import(fn, which=gr, genome=genome)
+        }
+      else st = stateGR
       ov = findOverlaps(gr, st)
       gr$fullStates[queryHits(ov)] = st$name[subjectHits(ov)]
       abbCIstates = get(load(system.file("data/abbCIstates.rda", package="erma")))
