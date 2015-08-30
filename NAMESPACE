@@ -7,9 +7,13 @@ import(foreach)
 #import(ff)
 importFrom(ff, ff, matprint, clone.ff, delete, vmode, clone,
 	maxffmode, is.ff, is.factor.ff)
+importFrom(ffbase, ffappend)
 #importFrom(ffbase, coerce_to_highest_vmode)
 #import(bit)
 #import(ffbase)
+
+importFrom(GenomicFiles, files)
+importFrom(rtracklayer, import)
 
 #importFrom(BiocParallel, bpparam, bpworkers, bplapply)
 
@@ -24,7 +28,7 @@ export(ciseStore)
 
 export(storeToFf, 
   extractByProbes, extractByRanges, storeMapResults, extractBySymbols,
-  storeApply, loadAndFilterResult)
+  storeApply, loadAndFilterResult, mergeCIstates, mergeGWhits)
 
 #storeToQuantiles, storeToHist, storeToFDR,
 #storeToFDRByProbe, 

@@ -17,7 +17,7 @@ retrieve eqtlTest results from a ciseStore instance
 \usage{
 extractByProbes(store, probeids, extractTag = "probeid")
 extractByRanges(store, gr)
-extractBySymbols(store, symbols, sym2probe, ...)
+extractBySymbols(store, symbols, sym2probe, extractTag = "probeid")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
