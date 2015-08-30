@@ -11,7 +11,7 @@ merge ChromImpute chromatin states, or GWAS hit
 indicators, to a GRanges
 }
 \usage{
-mergeCIstates(gr, ermaset, epig, genome = "hg19", useErma = TRUE)
+mergeCIstates(gr, ermaset, epig, genome = "hg19", importFull=FALSE, useErma = TRUE)
 mergeGWhits(gr, gwcat, use=c("both", "addr", "name")[1],
      grSnpField="SNP")
 }
@@ -33,6 +33,10 @@ the standardized epigenome name of the epigenome to use
 }
   \item{genome}{
 a tag for genome build
+}
+  \item{importFull}{
+logical, set to TRUE to acquire entire content (for LNG.FET, 800K ranges),
+to avoid contention for connections in parallel applications
 }
   \item{useErma}{
 logical -- at the moment, must be TRUE; plan is to allow use
