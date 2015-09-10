@@ -197,6 +197,11 @@ makeProbeMap = function(store, ..., probetag="probeid") {
        })
  ul = unlist(plist, recursive=FALSE)
  lens = sapply(ul, length)
+ if (any(lens==0)) {
+     todrop = which(lens==0)
+     lens = lens[-todrop]
+     ul = ul[-todrop]
+     }
  jobn = as.numeric(names(ul))
  jobnum = rep(jobn, lens)
  data.frame(probeid=unlist(ul), jobnum=jobnum, stringsAsFactors=FALSE)
