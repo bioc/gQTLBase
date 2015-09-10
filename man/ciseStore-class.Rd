@@ -49,6 +49,9 @@ will use \code{\link[foreach]{foreach}}, so that registration
 of a parallel back end
 using, e.g., \code{\link[doParallel]{registerDoParallel}},
 will determine the speed of construction
+
+Any registry job results that do not inherit from GRanges are
+mapped to NULL and will not be present in ultimate maps.
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~

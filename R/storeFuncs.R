@@ -190,7 +190,11 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
 makeProbeMap = function(store, ..., probetag="probeid") {
  chk1 = loadResult( store@reg, 1)
  stopifnot(probetag %in% names(mcols(chk1)))
- plist = storeApply( store, function(x) unique(as.character(mcols(x)[[probetag]])), ... )
+ plist = storeApply( store, function(x) 
+       {
+       if (!is(x, "GRanges")) return(NULL) # deal with NA or other
+       unique(as.character(mcols(x)[[probetag]])) #, ... )
+       })
  ul = unlist(plist, recursive=FALSE)
  lens = sapply(ul, length)
  jobn = as.numeric(names(ul))
@@ -201,7 +205,9 @@ makeProbeMap = function(store, ..., probetag="probeid") {
 makeRangeMap = function(store, ...) {
  chk1 = loadResult( store@reg, 1)
  stopifnot(is(chk1, "GRanges"))
- plist = storeApply( store, range )  # storeApply will create a list of lists
+ plist = storeApply( store, function(x) {
+      if (!is(x, "GRanges")) return(NULL) # deal with NA or other
+      range(x) })  # storeApply will create a list of lists
  ul = unlist(GRangesList(unlist(plist)))
  ul$jobid = names(ul)
  ul
