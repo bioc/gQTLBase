@@ -21,10 +21,13 @@ ufeatByTiling = function(se, tiling, maxlen=20) {
    bige = which(lans > maxlen)
    if (length(bige)>0) {
       okl = ans[ -bige ]
-      tochop = unlist( ans[ bige ] )
-      chs = chunk(1:length(tochop), chunk.size=maxlen)
-      chopped = lapply(chs, function(x) tochop[x])
-      ans = c(okl, chopped)
+      tochop =  ans[ bige ] 
+      sm = vector("list", length=length(tochop))  # ensure lists are from same seq
+      for (i in 1:length(tochop) ) {
+          chs = chunk(1:length(tochop[[i]]), chunk.size=maxlen)
+          sm[[i]] = lapply(chs, function(x) tochop[[i]][x])
+          }
+      ans = c(okl, unlist(sm, recursive=FALSE))
       }
    ans
 }
