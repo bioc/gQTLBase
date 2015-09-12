@@ -1,11 +1,11 @@
 Package: gQTLBase
 Title: gQTLBase: infrastructure for eQTL, mQTL and similar studies
-Version: 1.1.20
+Version: 1.1.22
 Author: VJ Carey <stvjc@channing.harvard.edu>
 Description: Infrastructure for eQTL, mQTL and similar studies.
 Suggests: geuvStore, knitr, rmarkdown, BiocStyle, RUnit,
 	GGtools, Homo.sapiens, IRanges, erma, 
-	GenomeInfoDb, gwascat
+	GenomeInfoDb, gwascat, geuvPack
 Imports: GenomicRanges, methods, BatchJobs, BBmisc, 
 	S4Vectors, BiocGenerics, foreach, doParallel, bit, ff, rtracklayer,
         ffbase, GenomicFiles
@@ -16,3 +16,4 @@ LazyLoad: yes
 VignetteBuilder: knitr
 BiocViews: SNP, GenomeAnnotation, Genetics, DataImport, FunctionalGenomics
 Collate: storeS4.R cb2range.R ffapp2.R gtpath.R storeFuncs.R mergeToLoci.R
+	ufeatByTiling.R
