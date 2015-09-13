@@ -1,8 +1,10 @@
 \name{ufeatByTiling}
 \alias{ufeatByTiling}
+\alias{balancedFeatList}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-split featurenames of SummarizedExperiment according to tiling 
+split featurenames of SummarizedExperiment according to tiling,
+or to achieve simple balance within seqnames
 }
 \description{
 split featurenames of SummarizedExperiment according to tiling,
@@ -10,6 +12,7 @@ without redundancies
 }
 \usage{
 ufeatByTiling(se, tiling, maxlen=20)
+balancedFeatList(se, maxlen=20)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +28,8 @@ to have this length, to foster load balancing
 }
 }
 \details{
-uses findOverlaps
+ufeatByTiling uses findOverlaps, balancedFeatList uses
+split on seqnames and BBmisc::chunk
 }
 \value{
 a list with elements of names(rowRanges(se)) corresponding
@@ -56,6 +60,8 @@ tg_500k = tileGenome(seqinfo(TxDb(Homo.sapiens))[au,], tilewidth=500000,
   cut.last.tile.in.chrom=TRUE)
 sn = ufeatByTiling(geuFPKM, tg_500k)
 summary(sapply(sn,length))
+sn2 = balancedFeatList(geuFPKM)
+summary(sapply(sn2,length))
 }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

@@ -32,3 +32,11 @@ ufeatByTiling = function(se, tiling, maxlen=20) {
    ans
 }
 
+balancedFeatList = function(se, maxlen=20) {
+ sse = split(se, as.character(seqnames(se)))
+ ans = lapply(sse, function(x) {
+        chunk(rownames(x), chunk.size=maxlen)
+        })
+ unlist(ans, recursive=FALSE) # return to simple list
+}
+
