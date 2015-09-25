@@ -166,7 +166,8 @@ setMethod("extractBySymbols", c("ciseStore", "character", "character", "missing"
 }
 
 
-storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
+storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE,
+    flatten1=FALSE ) {
  oldPB = getOption("BBmisc.ProgressBar.style")
  oldBJV = getOption("BatchJobs.verbose")
  on.exit( {
@@ -184,7 +185,9 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE ) {
  fOnRetrieval = function(ch) reduceResultsList( getRegistry(store), ch,
       fun=function(job, res) f(res) )
 ##BP bplapply( chs, fOnRetrieval, ... )
- foreach(x=chs) %dopar% fOnRetrieval(x, ...)
+ ans = foreach(x=chs) %dopar% fOnRetrieval(x, ...)
+ if (flatten1) return(unlist(ans,recursive=FALSE))
+ ans
 }
 
 makeProbeMap = function(store, ..., probetag="probeid") {

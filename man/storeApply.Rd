@@ -10,7 +10,7 @@ apply a function
 over job results in a ciseStore instance
 }
 \usage{
-storeApply(store, f, n.chunks, ids=NULL, ..., verbose = FALSE)
+storeApply(store, f, n.chunks, ids=NULL, ..., verbose = FALSE, flatten1=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,11 +41,15 @@ additional arguments to foreach
   \item{verbose}{
 if TRUE will allow progressbars and other messages to display 
 }
+  \item{flatten1}{
+if TRUE will execute unlist(...,recursive=FALSE) on output,
+so that stratification by host-level chunk is eliminated.
+}
 }
 \details{
 The chunking of job identifiers will determine the degree
 of parallelization of application, and the form of the list that
-is returned.
+is returned.  \code{flatten1} will eventually default to TRUE.
 }
 \value{
 A list whose structure depends on the chunking of job identifiers.

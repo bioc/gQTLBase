@@ -33,7 +33,7 @@ ufeatByTiling = function(se, tiling, maxlen=20) {
 }
 
 balancedFeatList = function(se, maxlen=20) {
- sse = split(se, as.character(seqnames(se)))
+ sse = split(se, as.character(seqnames(se))) # want to preserve grouping by chrom
  ans = lapply(sse, function(x) {
         chunk(rownames(x), chunk.size=maxlen)
         })
