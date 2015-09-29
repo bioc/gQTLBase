@@ -34,6 +34,11 @@ from ranges on chromosomes, to job identifiers, in mcols()$jobid}
 
 \section{Methods}{
 show
+
+Function \code{describeStore} uses batchMapResults and reduceResults
+to leverage a parallel environment to collect information on numbers
+of tests and features.  Arguments are described in the associated
+man page.
 }
 %\references{
 %%  ~~put references to the literature/web site here~~

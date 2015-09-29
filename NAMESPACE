@@ -19,7 +19,7 @@ importFrom(rtracklayer, import)
 
 importFrom(BatchJobs, loadResults, findDone, getJobIds,
    reduceResults, reduceResultsList, loadResult, makeRegistry,
-   batchMapResults, submitJobs)
+   batchMapResults, submitJobs, waitForJobs)
 
 importFrom(BBmisc, chunk)
 
@@ -29,7 +29,7 @@ export(ciseStore)
 export(storeToFf, 
   extractByProbes, extractByRanges, storeMapResults, extractBySymbols,
   storeApply, loadAndFilterResult, mergeCIstates, mergeGWhits,
-  ufeatByTiling, balancedFeatList)
+  ufeatByTiling, balancedFeatList, describeStore)
 
 #storeToQuantiles, storeToHist, storeToFDR,
 #storeToFDRByProbe, 
