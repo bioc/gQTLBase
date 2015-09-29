@@ -41,12 +41,39 @@ describeStoreToTmpReg = function(st, genetag="probeid", snptag="snp", ids=NULL,
 describeStore = function(st, genetag="probeid", snptag="snp", ids=NULL, resfilter=force, ...) {
    tmpreg = describeStoreToTmpReg( st=st, genetag=genetag, snptag=snptag, ids=ids, resfilter=resfilter, ...)
    waitForJobs(tmpreg)
-   redr = function(aggr, job, res, ...) {
-        aggr$len = aggr$len + res$len
-        aggr$ugn = unique(c(aggr$ugn, res$ugn))
-        aggr$usn = unique(c(aggr$usn, res$usn))
-        aggr
-        }
-   rr = reduceResults(tmpreg, fun=redr)
-   list(ntests=rr$len, ngene.uniq = length(rr$ugn), nsnp.uniq=length(rr$usn))
+   summs = loadResults(tmpreg) # lengths and modest length vectors of strings
+   ntests = sum(sapply(summs, function(x) x$len)) # fast
+   n.gene.uniq = length(unique(unlist(lapply(summs, function(x) x$ugn)))) # fast?
+   n.snp.uniq = length(unique(unlist(lapply(summs, function(x) x$usn)))) # fast?
+#   redr = function(aggr, job, res, ...) {
+#        aggr$len = aggr$len + res$len
+#        aggr$ugn = unique(c(aggr$ugn, res$ugn))
+#        aggr$usn = unique(c(aggr$usn, res$usn))
+#        aggr
+#        }
+#   rr = reduceResults(tmpreg, fun=redr)  # sequential, too slow
+#   list(ntests=rr$len, ngene.uniq = length(rr$ugn), nsnp.uniq=length(rr$usn))
+    list(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq)
 }
+
+dendroReduce.bj = function(llike, binfun) {
+  n = length(llike)
+  indl = BBmisc::chunk(1:n, chunk.size=2)
+  tname = tempfile()
+  tfold = dir.create(tname)
+  tmpr = makeRegistry(basename(tname), file.dir=tfold)
+  batchMap(tmpr, binfun, indl)
+  submitJobs(tmpr, binfun)
+  waitForJobs(tmpr)
+  tmpr
+}
+
+dendroReduce.fe = function(llike, binfun) {
+  n = length(llike)
+  if (n==1) return(llike)
+  indl = BBmisc::chunk(1:n, chunk.size=2)
+  red = foreach(i = 1:length(indl)) %dopar%{ binfun(llike[[indl[[i]][1]]],
+           llike[[indl[[i]][2]]])}
+  Recall(red, binfun)
+}
+  
