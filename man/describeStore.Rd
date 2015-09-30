@@ -10,7 +10,7 @@ collect basic descriptive statistics on ciseStore instances
 }
 \usage{
 describeStore(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, ...)
-describeByFilts(st, filtlist)
+describeByFilts(st, filtlist, ...)
 }
 
 %- maybe also 'usage' for other objects documented here.
@@ -35,7 +35,7 @@ function applied to job results prior to summarization, defaults to force()
 a list of functions suitable as resfilter arguments
 }
   \item{\dots}{
-not currently used
+used with describeByFilts, pass to storeApply
 }
 }
 \details{
