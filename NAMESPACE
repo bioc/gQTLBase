@@ -29,7 +29,7 @@ export(ciseStore)
 export(storeToFf, 
   extractByProbes, extractByRanges, storeMapResults, extractBySymbols,
   storeApply, loadAndFilterResult, mergeCIstates, mergeGWhits,
-  ufeatByTiling, balancedFeatList, describeStore)
+  ufeatByTiling, balancedFeatList, describeStore, describeByFilts)
 
 #storeToQuantiles, storeToHist, storeToFDR,
 #storeToFDRByProbe, 
