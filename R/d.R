@@ -38,7 +38,7 @@ describeStoreToTmpReg = function(st, genetag="probeid", snptag="snp", ids=NULL,
   submitJobs(tmpreg)
   tmpreg
 }
-describeStore = function(st, genetag="probeid", snptag="snp", ids=NULL, resfilter=force, ...) {
+describeStore.slow = function(st, genetag="probeid", snptag="snp", ids=NULL, resfilter=force, ...) {
    tmpreg = describeStoreToTmpReg( st=st, genetag=genetag, snptag=snptag, ids=ids, resfilter=resfilter, ...)
    waitForJobs(tmpreg)
    summs = loadResults(tmpreg) # lengths and modest length vectors of strings
@@ -69,6 +69,7 @@ dendroReduce.bj = function(llike, binfun) {
 }
 
 dendroReduce.fe = function(llike, binfun) {
+# binfun must be endomorphic
   n = length(llike)
   if (n==1) return(llike)
   indl = BBmisc::chunk(1:n, chunk.size=2)
@@ -77,3 +78,9 @@ dendroReduce.fe = function(llike, binfun) {
   Recall(red, binfun)
 }
   
+describeStore = function(st, genetag="probeid", snptag="snp", ...) {
+  ntests = sum(unlist(storeApply(st, length, flatten1=TRUE)))
+  n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(x)[[genetag]]), flatten1=TRUE))))
+  n.snp.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(x)[[snptag]]), flatten1=TRUE))))
+  c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq)
+}
