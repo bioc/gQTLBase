@@ -1,5 +1,6 @@
 \name{describeStore}
 \alias{describeStore}
+\alias{describeByFilts}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 collect basic descriptive statistics on ciseStore instances
@@ -9,7 +10,9 @@ collect basic descriptive statistics on ciseStore instances
 }
 \usage{
 describeStore(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, ...)
+describeByFilts(st, filtlist)
 }
+
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{st}{
@@ -28,12 +31,18 @@ integerish vector of ids, can be left NULL to survey entire store
   \item{resfilter}{
 function applied to job results prior to summarization, defaults to force()
 }
+  \item{filtlist}{
+a list of functions suitable as resfilter arguments
+}
   \item{\dots}{
 not currently used
 }
 }
 \details{
-uses parallel infrastructure of BatchJobs on contents managed by st@reg
+uses parallel infrastructure of foreach on contents managed by st@reg
+
+describeByFilts returns a matrix of descriptions with one row
+per filtlist element
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{

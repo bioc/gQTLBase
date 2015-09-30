@@ -84,3 +84,9 @@ describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, re
   n.snp.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[snptag]]), flatten1=TRUE))))
   c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq)
 }
+
+describeByFilts = function( st, filtlist ) {
+  ds = lapply(filtlist, function(f) describeStore(st, resfilter=f))
+  do.call(rbind, ds)
+}
+
