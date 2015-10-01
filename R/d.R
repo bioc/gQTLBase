@@ -81,7 +81,7 @@ dendroReduce.fe = function(llike, binfun) {
 describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, ...) {
   ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
   n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
-  n.snp.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[snptag]]), flatten1=TRUE, ids=ids))))
+  n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter)
   c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq)
 }
 
@@ -90,3 +90,16 @@ describeByFilts = function( st, filtlist, ... ) {
   do.call(rbind, ds)
 }
 
+jobsByChrom = function(st) {
+ rmap = st@rangeMap
+ sn = unique(seqnames(rmap))
+ lapply(sn, function(x) as.numeric(rmap[seqnames(rmap)==x]$jobid))
+}
+
+n.uniq.snp = function(st, snptag="snp", resfilter=force) {
+ jbc = jobsByChrom(st)
+ alls = lapply(1:length(jbc), function(i)
+    unique(unlist(storeApply(st, function(x)unique(mcols(resfilter(x))[[snptag]]), ids=jbc[[i]])))
+ )
+ length(unique(unlist(alls)))
+}

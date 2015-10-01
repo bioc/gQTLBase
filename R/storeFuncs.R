@@ -179,7 +179,7 @@ storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE,
    options(BatchJobs.verbose=FALSE)
    }
  curids = getJobIds( store )
- if (!is.null(ids)) ids = intersect(ids,curids)
+ if (!is.null(ids)) ids = intersect(ids,curids) # defaults to one set of ids per worker
  chs = getStoreIDchunks( store, n.chunks, ids=ids ) #chunk( ids, n.chunks = n.chunks )
 # probably need to intersect chs with ids or ids is ignored
  fOnRetrieval = function(ch) reduceResultsList( getRegistry(store), ch,
@@ -282,4 +282,11 @@ cleanc = function (...)
 #BP      })
     }
   suppressMessages({do.call(cleanc, tmp)})
+}
+
+storeApply2 = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE,
+    flatten1=FALSE ) {
+ curids = getJobIds( store )
+ if (!is.null(ids)) ids = intersect(ids,curids)
+ foreach(x=ids) %dopar% f(loadResult(store@reg,x), ...)
 }
