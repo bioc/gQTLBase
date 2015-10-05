@@ -96,8 +96,14 @@ jobsByChrom = function(st) {
  lapply(sn, function(x) as.numeric(rmap[seqnames(rmap)==x]$jobid))
 }
 
-n.uniq.snp = function(st, snptag="snp", resfilter=force) {
+n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
  jbc = jobsByChrom(st)
+ if (!is.null(ids)) {
+    jbc = lapply(jbc, function(x) intersect(ids, x))
+    jl = sapply(jbc,length)
+    if (all(jl==0)) stop("none of the ids selected are available")
+    jbc = jbc[which(jl>0)]
+    }
  alls = lapply(1:length(jbc), function(i)
     unique(unlist(storeApply(st, function(x)unique(mcols(resfilter(x))[[snptag]]), ids=jbc[[i]])))
  )
