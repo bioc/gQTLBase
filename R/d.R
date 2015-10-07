@@ -78,11 +78,19 @@ dendroReduce.fe = function(llike, binfun) {
   Recall(red, binfun)
 }
   
-describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, ...) {
+describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
+  chkfun = function(x) {
+    m = metadata(x)
+    c(reqsize=m$requestSize, reqsat=m$nRequestsSatisfied, litenloc=
+         m$dimliteGT[1], len=length(x))
+  }
+  chkstr = NULL
+  if (doChecks) chkstr = storeApply( st, chkfun )
   ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
   n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
   n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter)
-  c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq)
+  list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq),
+      checks=chkstr)
 }
 
 describeByFilts = function( st, filtlist, ... ) {
