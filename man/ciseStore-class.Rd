@@ -3,6 +3,7 @@
 \docType{class}
 \alias{ciseStore-class}
 \alias{ciseStore}
+\alias{show,ciseStore-method}
 
 \title{Class \code{"ciseStore"}}
 \description{
