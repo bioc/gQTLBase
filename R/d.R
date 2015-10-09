@@ -78,21 +78,6 @@ dendroReduce.fe = function(llike, binfun) {
   Recall(red, binfun)
 }
   
-describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
-  chkfun = function(x) {
-    m = metadata(x)
-    c(reqsize=m$requestSize, reqsat=m$nRequestsSatisfied, litenloc=
-         m$dimliteGT[1], len=length(x))
-  }
-  chkstr = NULL
-  if (doChecks) chkstr = storeApply( st, chkfun )
-  ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
-  n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
-  n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter)
-  list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq),
-      checks=chkstr)
-}
-
 describeByFilts = function( st, filtlist, ... ) {
   ds = lapply(filtlist, function(f) describeStore(st, resfilter=f, ...))
   do.call(rbind, ds)
@@ -117,3 +102,41 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
  )
  length(unique(unlist(alls)))
 }
+
+
+
+.describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
+  chkfun = function(x) {
+    m = metadata(x)
+    c(reqsize=m$requestSize, reqsat=m$nRequestsSatisfied, litenloc=
+         m$dimliteGT[1], len=length(x))
+  }
+  chkstr = NULL
+  if (doChecks) chkstr = storeApply( st, chkfun )
+  ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
+  n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
+  n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter)
+  list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq),
+      checks=chkstr)
+}
+
+setClass("storeDescription", representation(
+    basic="ANY", reqstat="numeric", lenstat="numeric", full="list",
+    reqfail="ANY", locfail="ANY"))
+setMethod("show", "storeDescription", function(object){
+cat("storeDescription:\n")
+print(object@basic)
+cat("% requests satisfied: ", 100*round(object@reqstat,3), "\n")
+cat("% lengths verified: ", 100*round(object@lenstat,3), "\n")
+})
+
+describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
+ d1 = .describeStore(st=st, genetag=genetag, snptag=snptag, ids=ids,
+      resfilter=resfilter, doChecks=doChecks, ...)
+ chks = sapply(unlist(d1$checks, recursive=FALSE), force)
+ reqstat = mean(breq <- (chks[1,]==chks[2,]), na.rm=TRUE)
+ lenstat = mean(lreq <- (chks[3,]==chks[4,]), na.rm=TRUE)
+ new("storeDescription", basic=d1$basic, reqstat=reqstat,
+   lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq))
+}
+

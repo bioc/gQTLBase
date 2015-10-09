@@ -1,6 +1,9 @@
 \name{describeStore}
 \alias{describeStore}
 \alias{describeByFilts}
+\alias{storeDescription-class}
+\alias{show}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 collect basic descriptive statistics on ciseStore instances
@@ -9,7 +12,8 @@ collect basic descriptive statistics on ciseStore instances
 collect basic descriptive statistics on ciseStore instances
 }
 \usage{
-describeStore(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, ...)
+describeStore(st, genetag = "probeid", snptag = "snp", ids = NULL,
+                 resfilter = force, doChecks = TRUE, ...)
 describeByFilts(st, filtlist, ...)
 }
 
@@ -34,6 +38,9 @@ function applied to job results prior to summarization, defaults to force()
   \item{filtlist}{
 a list of functions suitable as resfilter arguments
 }
+  \item{doChecks}{logical -- if true, will collect information on
+match between number probes requested and number reported on,
+and two scans of VCF loci in cis to probes.  See details.}
   \item{\dots}{
 used with describeByFilts, pass to storeApply
 }
@@ -43,6 +50,19 @@ uses parallel infrastructure of foreach on contents managed by st@reg
 
 describeByFilts returns a matrix of descriptions with one row
 per filtlist element
+
+storeDescription holds results of a describe task and includes
+information on noncongruence of features with cis tests
+and of results of two distinct scans of VCF: one with readGT
+on a single sample, the other with readVcf on all samples.
+If there are discrepancies between features given and tests
+returned, [storeDescription]@reqfail will give the job ids for these.
+If there are discrepancies between the numbers of loci retrieved
+on the two VCF scans, @locfail will tive the job ids for these.
+@reqfail events may be legitimate when a feature has no SNP in
+cis at the given radius.  @locfail events usually indicate an
+I/O problem and the jobs should be resubmitted.
+
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{

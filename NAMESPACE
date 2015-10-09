@@ -41,4 +41,6 @@ export(storeToFf,
 
 export(matprint)
 
-exportMethods("extractByProbes", "extractByRanges", "extractBySymbols")
+exportMethods("extractByProbes", "extractByRanges", "extractBySymbols", "show")
+ 
+exportClass("storeDescription")
