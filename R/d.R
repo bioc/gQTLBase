@@ -133,10 +133,13 @@ cat("% lengths verified: ", 100*round(object@lenstat,3), "\n")
 describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
  d1 = .describeStore(st=st, genetag=genetag, snptag=snptag, ids=ids,
       resfilter=resfilter, doChecks=doChecks, ...)
- chks = sapply(unlist(d1$checks, recursive=FALSE), force)
- reqstat = mean(breq <- (chks[1,]==chks[2,]), na.rm=TRUE)
- lenstat = mean(lreq <- (chks[3,]==chks[4,]), na.rm=TRUE)
- new("storeDescription", basic=d1$basic, reqstat=reqstat,
-   lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq))
+ if (!is.null(d1$checks)) {
+  chks = sapply(unlist(d1$checks, recursive=FALSE), force)
+  reqstat = mean(breq <- (chks[1,]==chks[2,]), na.rm=TRUE)
+  lenstat = mean(lreq <- (chks[3,]==chks[4,]), na.rm=TRUE)
+  return(new("storeDescription", basic=d1$basic, reqstat=reqstat,
+   lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq)))
+  }
+ return(new("storeDescription", basic=d1$basic))
 }
 
