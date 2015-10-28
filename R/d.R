@@ -138,12 +138,14 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
 
 setClass("storeDescription", representation(
     basic="ANY", reqstat="numeric", lenstat="numeric", full="list",
-    reqfail="ANY", locfail="ANY"))
+    reqfail="ANY", locfail="ANY", nareq="numeric", naloc="numeric"))
 setMethod("show", "storeDescription", function(object){
 cat("storeDescription:\n")
 print(object@basic)
 cat("% requests satisfied: ", 100*round(object@reqstat,3), "\n")
 cat("% lengths verified: ", 100*round(object@lenstat,3), "\n")
+if (object@nareq>0) cat("there were ", object@nareq, "requests with size NA.\n")
+if (object@naloc>0) cat("there were ", object@naloc, "locus sets with size NA.\n")
 })
 
 describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
@@ -152,10 +154,13 @@ describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, re
  if (!is.null(d1$checks)) {
   #chks = sapply(unlist(d1$checks, recursive=FALSE), force)
   chks = sapply(d1$checks, force)  # with flattening done in .describeStore
+  nareq = sum(is.na(chks[1,]))
+  naloc = sum(is.na(chks[3,]))
   reqstat = mean(breq <- (chks[1,]==chks[2,]), na.rm=TRUE)
   lenstat = mean(lreq <- (chks[3,]==chks[4,]), na.rm=TRUE)
   return(new("storeDescription", basic=d1$basic, reqstat=reqstat,
-   lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq)))
+   lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq),
+   nareq=nareq, naloc=naloc))
   }
  return(new("storeDescription", basic=d1$basic))
 }
