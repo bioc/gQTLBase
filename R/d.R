@@ -107,8 +107,7 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
 
 .describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
   chkfun = function(x) {
-    bad = c(reqsize=NA, reqsat=0, litenloc=NA,
-         m$dimliteGT[1], len=0)
+    bad = c(reqsize=NA, reqsat=0, litenloc=NA, len=0)
     if (!is(x, "GRanges")) return(bad)  # presumably NULL
     m = metadata(x)
     c(reqsize=m$requestSize, reqsat=m$nRequestsSatisfied, litenloc=
