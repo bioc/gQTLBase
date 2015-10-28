@@ -150,7 +150,8 @@ describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, re
  d1 = .describeStore(st=st, genetag=genetag, snptag=snptag, ids=ids,
       resfilter=resfilter, doChecks=doChecks, ...)
  if (!is.null(d1$checks)) {
-  chks = sapply(unlist(d1$checks, recursive=FALSE), force)
+  #chks = sapply(unlist(d1$checks, recursive=FALSE), force)
+  chks = sapply(d1$checks, force)  # with flattening done in .describeStore
   reqstat = mean(breq <- (chks[1,]==chks[2,]), na.rm=TRUE)
   lenstat = mean(lreq <- (chks[3,]==chks[4,]), na.rm=TRUE)
   return(new("storeDescription", basic=d1$basic, reqstat=reqstat,
