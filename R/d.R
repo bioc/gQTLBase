@@ -106,6 +106,13 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
 
 
 .describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
+#
+# this is getting complicated because a store can have some NULL job results
+# we want to be able to count in the presence of such results, recognizing
+# that they may be spurious and may need a rerun, given our experience
+# with inconsistent returns from S3 vcf scans ... still needs diagnosis
+# oct 28 2015
+#
   chkfun = function(x) {
     bad = c(reqsize=NA, reqsat=0, litenloc=NA, len=0)
     if (!is(x, "GRanges")) return(bad)  # presumably NULL
@@ -114,10 +121,17 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
          m$dimliteGT[1], len=length(x))
   }
   chkstr = NULL
-  if (doChecks) chkstr = storeApply( st, chkfun )
+  bad = NULL
+  if (doChecks) {
+    chkstr = storeApply( st, chkfun, flatten1=TRUE )
+    chk1 = sapply(chkstr, "[", 1)
+    bad = which(is.na(chk1))
+    }
+  if (is.null(ids)) ids = findDone(st@reg)
+  if (length(bad)>0) ids = setdiff(ids, bad)
   ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
   n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
-  n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter)
+  n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter, ids=ids)
   list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq),
       checks=chkstr)
 }
