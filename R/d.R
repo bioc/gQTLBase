@@ -142,8 +142,8 @@ setClass("storeDescription", representation(
 setMethod("show", "storeDescription", function(object){
 cat("storeDescription:\n")
 print(object@basic)
-cat("% requests satisfied: ", 100*round(object@reqstat,3), "\n")
-cat("% lengths verified: ", 100*round(object@lenstat,3), "\n")
+cat("% requests satisfied: ", round(100*object@reqstat,3), "\n")
+cat("% lengths verified: ", round(100*object@lenstat,3), "\n")
 if (object@nareq>0) cat("there were ", object@nareq, "requests with size NA.\n")
 if (object@naloc>0) cat("there were ", object@naloc, "locus sets with size NA.\n")
 })
