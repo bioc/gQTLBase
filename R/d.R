@@ -127,12 +127,17 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
     chk1 = sapply(chkstr, "[", 1)
     bad = which(is.na(chk1))
     }
-  if (is.null(ids)) ids = findDone(st@reg)
+  if (is.null(ids)) ids = getJobIds(st)
   if (length(bad)>0) ids = setdiff(ids, bad)
   ntests = sum(unlist(storeApply(st, function(x) length(resfilter(x)), flatten1=TRUE, ids=ids)))
   n.gene.uniq <- length(unique(unlist(storeApply(st, f=function(x) unique(mcols(resfilter(x))[[genetag]]), flatten1=TRUE, ids=ids))))
   n.snp.uniq = n.uniq.snp(st, snptag=snptag, resfilter=resfilter, ids=ids)
-  list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq),
+  ji = getJobInfo(st@reg, ids=ids)
+  totalTime = sum(ji$time.running,na.rm=TRUE)
+  memSumm = summary(ji$memory)
+  timeSumm = summary(ji$time.running)
+  list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq,
+     totalTime=totalTime, timeSumm=timeSumm, memSumm=memSumm),
       checks=chkstr)
 }
 

@@ -10,7 +10,7 @@ apply a function
 over job results in a ciseStore instance
 }
 \usage{
-storeApply(store, f, n.chunks, ids=NULL, ..., verbose = FALSE, flatten1=FALSE)
+storeApply(store, f, n.chunks, ids=NULL, ..., verbose = FALSE, flatten1=TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -43,7 +43,7 @@ if TRUE will allow progressbars and other messages to display
 }
   \item{flatten1}{
 if TRUE will execute unlist(...,recursive=FALSE) on output,
-so that stratification by host-level chunk is eliminated.
+defaulted to FALSE in previous version
 }
 }
 \details{

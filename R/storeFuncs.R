@@ -167,7 +167,7 @@ setMethod("extractBySymbols", c("ciseStore", "character", "character", "missing"
 
 
 storeApply = function( store, f, n.chunks, ids=NULL, ... , verbose=FALSE,
-    flatten1=FALSE ) {
+    flatten1=TRUE ) {
  oldPB = getOption("BBmisc.ProgressBar.style")
  oldBJV = getOption("BatchJobs.verbose")
  on.exit( {
