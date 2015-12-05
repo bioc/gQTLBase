@@ -138,19 +138,34 @@ n.uniq.snp = function(st, snptag="snp", resfilter=force, ids=NULL) {
   timeSumm = summary(ji$time.running)
   list(basic=c(ntests=ntests, n.gene.uniq=n.gene.uniq, n.snp.uniq=n.snp.uniq,
      totalTime=totalTime, timeSumm=timeSumm, memSumm=memSumm),
-      checks=chkstr)
+      checks=chkstr, jobinfo=ji)
 }
 
 setClass("storeDescription", representation(
     basic="ANY", reqstat="numeric", lenstat="numeric", full="list",
     reqfail="ANY", locfail="ANY", nareq="numeric", naloc="numeric"))
+
 setMethod("show", "storeDescription", function(object){
-cat("storeDescription:\n")
-print(object@basic)
-cat("% requests satisfied: ", round(100*object@reqstat,3), "\n")
-cat("% lengths verified: ", round(100*object@lenstat,3), "\n")
-if (object@nareq>0) cat("there were ", object@nareq, "requests with size NA.\n")
-if (object@naloc>0) cat("there were ", object@naloc, "locus sets with size NA.\n")
+cat("storeDescription (", length(object@full$jobinfo$id), " jobs):\n", sep="")
+#print(object@basic)
+cat(object@basic["ntests"], " tests (", object@basic["n.gene.uniq"], 
+      " genes, ",
+      object@basic["n.snp.uniq"], " snps).\n", sep="")
+#
+rstats = object@full$jobinfo$time.running
+memstats = object@full$jobinfo$memory
+cat("Time running [median (range)] (sec): [", median(rstats, na.rm=TRUE), " (",
+  min(rstats, na.rm=TRUE), ", ", max(rstats, na.rm=TRUE),  ")]\n", sep="")
+cat("RAM used [median (range)] (Mb): [", median(memstats, na.rm=TRUE), " (",
+  min(memstats, na.rm=TRUE), ", ", max(memstats, na.rm=TRUE),  ")]\n", sep="")
+if (length(object@nareq)>0) {
+ cat("% requests satisfied: ", round(100*object@reqstat,3), "\n")
+ if (object@nareq>0) cat("there were ", object@nareq, "requests with size NA.\n")
+}
+if (length(object@naloc)>0) {
+ cat("% lengths verified: ", round(100*object@lenstat,3), "\n")
+ if (object@naloc>0) cat("there were ", object@naloc, "locus sets with size NA.\n")
+}
 })
 
 describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, resfilter = force, doChecks=TRUE, ...) {
@@ -167,6 +182,6 @@ describeStore = function(st, genetag = "probeid", snptag = "snp", ids = NULL, re
    lenstat=lenstat, full=d1, reqfail=which(!breq), locfail=which(!lreq),
    nareq=nareq, naloc=naloc))
   }
- return(new("storeDescription", basic=d1$basic))
+ return(new("storeDescription", basic=d1$basic, full=d1))
 }
 
