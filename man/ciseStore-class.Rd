@@ -70,8 +70,8 @@ mapped to NULL and will not be present in ultimate maps.
 showClass("ciseStore")
 # get the global assignment back
 require(BatchJobs)
-if (require(geuvStore)) {
- store = makeGeuvStore()
+if (require(geuvStore2)) {
+ store = makeGeuvStore2()
  store
  }
 }

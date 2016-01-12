@@ -91,9 +91,9 @@ list with elements ntests, ngene.uniq, nsnp.uniq
 %}
 \examples{
 \dontrun{
- library(geuvStore)
- mm = makeGeuvStore()
- describeStore(mm, ids=partialIds()[1:10], resfilter=function(x) x[x$mindist < 50000])
+ library(geuvStore2)
+ mm = makeGeuvStore2()
+ describeStore(mm, ids=1:10, resfilter=function(x) x[x$mindist < 50000])
  }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

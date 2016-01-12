@@ -73,9 +73,9 @@ is no guarantee of order among elements
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-if (require(geuvStore)) {
+if (require(geuvStore2)) {
  require(BatchJobs)
- store = makeGeuvStore()
+ store = makeGeuvStore2()
  smchisq = storeToFf( store, "chisq", ids=store@validJobs[1:3]) 
  smchisq
  }

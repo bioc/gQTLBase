@@ -68,8 +68,8 @@ VJ Carey <stvjc@channing.harvard.edu>
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
-if (require(geuvStore)) {
- store = makeGeuvStore()
+if (require(geuvStore2)) {
+ store = makeGeuvStore2()
  ebp = extractByProbes(store, c("ENSG00000183814.10", "ENSG00000174827.9"))
  ebp
  rr = range(ebp)

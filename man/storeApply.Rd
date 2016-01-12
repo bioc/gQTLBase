@@ -82,9 +82,9 @@ target specific results via \code{ids}; \code{storeApply} uses bplapply
 over the entire store
 }
 \examples{
-if (require(geuvStore)) {
+if (require(geuvStore2)) {
  require(BatchJobs)
- store = makeGeuvStore()
+ store = makeGeuvStore2()
  storeApply(store, length)
  storeApply(store, length, ids=c(1:3,603))
  }

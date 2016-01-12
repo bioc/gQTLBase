@@ -74,9 +74,9 @@ and may be removed in future versions.
 %}
 \examples{
 \dontrun{
-if (require(geuvStore)) {
+if (require(geuvStore2)) {
  require(BatchJobs)
- store = makeGeuvStore()
+ store = makeGeuvStore2()
  fd = tempfile()
  tempreg = makeRegistry("tempSMR", file.dir=fd)
  storeMapResults( store, tempreg, fun=function(job, res, ...) length(res) )

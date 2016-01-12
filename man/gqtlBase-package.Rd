@@ -18,7 +18,7 @@ The DESCRIPTION file:
 Purpose is to define infrastructure on a comprehensive archive
 of eQTL, mQTL, dsQTL, etc., association statistics.
 
-Package will complement gQTLStats.  geuvStore is a basic
+Package will complement gQTLStats.  geuvStore2 is a basic
 illustration relative to GEUVADIS paper.
 
 \code{\link[ff]{matprint}} is exported from package ff.

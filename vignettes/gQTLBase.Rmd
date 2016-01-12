@@ -113,26 +113,22 @@ library(stats4)
 library(IRanges)
 library(GGtools)
 library(gQTLBase)
-library(geuvStore)
+library(geuvStore2)
 options(BBmisc.ProgressBar.style="off")
 })
 ```
 ```{r doone}
 library(gQTLBase)
-library(geuvStore)
-mm = partialRegistry()
+library(geuvStore2)
+mm = makeGeuvStore2()
 mm
 ```
 
-`mm` here denotes a BatchJobs `Registry`.  We want to wrap
-it lightly, adding maps from probes and addresses
-of SNPs to job identifiers where these probes and SNPs
-have been analyzed.
-```{r wrap, cache=TRUE}
-mm = ciseStore(mm, validJobs=partialIds(),
-        addProbeMap = TRUE, addRangeMap = TRUE)
-mm
-```
+`mm` here is an instance of the `ciseStore` class.
+This is a BatchJobs `Registry` wrapped
+with additional information concerning the
+map from identifiers or ranges to jobs in the
+registry.  
 
 There are various approaches available to get results
 out of the store.  At present we don't want a full
