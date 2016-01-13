@@ -1,4 +1,5 @@
 import(GenomicRanges)
+import(SummarizedExperiment)
 import(S4Vectors)
 import(methods)
 import(BiocGenerics)
