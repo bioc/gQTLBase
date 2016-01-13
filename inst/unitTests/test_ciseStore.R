@@ -17,6 +17,7 @@ checkCisEstore = function() {
 
 # basic operations for a ciseStore instance
 
+ library(geuvStore2)
  nn = makeGeuvStore2()
  checkTrue(inherits(nn@reg, "Registry"))
  nnrun = ciseStore(reg=nn@reg, 1:160, TRUE, TRUE)
