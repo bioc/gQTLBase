@@ -162,7 +162,7 @@ setMethod("extractBySymbols", c("ciseStore", "character", "character", "missing"
   }
   ans = ans[ which(sapply(ans,length)>0) ]
   stopifnot(length(ans)>0)
-  IRanges::unlist(GRangesList(ans))
+  unlist(GRangesList(ans))
 }
 
 
