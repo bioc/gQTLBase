@@ -21,7 +21,7 @@ checkCisEstore = function() {
  nn = makeGeuvStore2()
  checkTrue(inherits(nn@reg, "Registry"))
  nnrun = ciseStore(reg=nn@reg, 1:160, TRUE, TRUE)
- checkTrue( seqlevelsStyle(nn@rangeMap) == "NCBI" )
+ checkTrue( "NCBI" %in% seqlevelsStyle(nn@rangeMap) )
  checkTrue( all(genome(nn@rangeMap) == "hg19") )
 
 # extractByProbes
