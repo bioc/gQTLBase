@@ -1,6 +1,6 @@
 Package: gQTLBase
 Title: gQTLBase: infrastructure for eQTL, mQTL and similar studies
-Version: 1.11.0
+Version: 1.12.0
 Author: VJ Carey <stvjc@channing.harvard.edu>
 Description: Infrastructure for eQTL, mQTL and similar studies.
 Suggests: geuvStore2, knitr, rmarkdown, BiocStyle, RUnit,
