@@ -84,7 +84,7 @@ A `r CRANpkg("BatchJobs")` registry is created as follows:
 ```{r bjreg,eval=FALSE}
 flatReg = makeRegistry("flatReg",  file.dir="flatStore",
         seed=123, packages=c("GenomicRanges",
-            "GGtools", "VariantAnnotation", "Rsamtools",
+            "VariantAnnotation", "Rsamtools",
             "geuvPack", "GenomeInfoDb"))
 ```
 
@@ -111,7 +111,6 @@ library(BiocGenerics)
 library(Homo.sapiens)
 library(stats4)
 library(IRanges)
-library(GGtools)
 library(gQTLBase)
 library(geuvStore2)
 options(BBmisc.ProgressBar.style="off")

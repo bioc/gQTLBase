@@ -91,6 +91,7 @@ will be collected and added.
 %% ~~objects to See Also as \code{\link{help}}, ~~~
 %}
 \examples{
+\dontrun{  # needs to use updated gwascat
 if (require(gwascat) && require(erma)) {
 #
 # demonstrate Tx state for exon starts
@@ -110,6 +111,7 @@ if (require(gwascat) && require(erma)) {
   start(g1[length(g1)]) = 38062196
   mergeGWhits(g1, ebicat37)
   }
+ }
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
