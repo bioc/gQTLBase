@@ -39,7 +39,7 @@ character atom telling what field in the
 archived GRanges is regarded as the probe or
 gene identifier
 }
-  \item{\dots}{extra arguments to extractByProbes}
+%  \item{\dots}{extra arguments to extractByProbes}
 }
 \details{
 an index will be searched if created by the ciseStore constructor

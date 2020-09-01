@@ -6,8 +6,9 @@ import(BiocGenerics)
 import(doParallel)
 import(foreach)
 #import(ff)
-importFrom(ff, ff, matprint, clone.ff, delete, vmode, clone,
-	maxffmode, is.ff, is.factor.ff)
+importFrom(ff, ff, matprint, delete, vmode, clone.ff,
+       maxffmode, is.ff)
+importFrom(bit, clone)
 importFrom(ffbase, ffappend)
 #importFrom(ffbase, coerce_to_highest_vmode)
 #import(bit)
