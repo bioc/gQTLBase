@@ -1,5 +1,5 @@
 ---
-title: gQTLBase: infrastructure for storage and interrogation of eQTL, mQTL, dsQTL etc. archives
+title: "gQTLBase: infrastructure for storage and interrogation of eQTL, mQTL, dsQTL etc. archives"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
 date: "January 2015"
 %\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
