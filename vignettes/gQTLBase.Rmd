@@ -2,9 +2,6 @@
 title: "Infrastructure for storage and interrogation of eQTL, mQTL, dsQTL etc. archives"
 author: "Vincent J. Carey, stvjc at channing.harvard.edu"
 date: "January 2015"
-%\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
-%\VignetteEngine{knitr::rmarkdown}
-%\VignettePackage{gQTLBase}
 output:
   BiocStyle::html_document:
     highlight: pygments
@@ -15,6 +12,9 @@ output:
     toc: true
     number_sections: true
 ---
+%\VignetteIndexEntry{gQTLBase infrastructure for eQTL archives}
+%\VignetteEngine{knitr::rmarkdown}
+%\VignettePackage{gQTLBase}
 
 ```{r style, echo = FALSE, results = 'asis'}
 BiocStyle::markdown()
